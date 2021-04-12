@@ -1,0 +1,12 @@
+.footer{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: $color-primary;
+
+    .politics{
+        margin: 0;
+        padding: 1rem 0;
+    }
+}

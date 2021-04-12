@@ -1,0 +1,42 @@
+.contentCard{
+    width: auto;
+    display: flex;
+    margin: auto;
+    position: relative;
+    overflow: hidden;
+    
+
+    &__link{
+        display: none;
+        position: absolute;
+        z-index: 50;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        background-color: $color-tertiary;
+        opacity: .8;
+        padding: 50%;
+
+        &__item{
+            color: #fff;
+        }
+    }
+    
+    &__img{
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    @include fromMax(l){
+        margin: 0 auto;
+        margin-bottom: auto;
+    }
+}
+
+
+.contentCard:hover .contentCard__link{
+    cursor: pointer;
+    display: block;
+}

@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Portafolio",
+  "name": "Portafolio Andrés Vergara",
   "icons": [
     {
       "src": "favicon.ico",
@@ -18,8 +18,24 @@
       "sizes": "512x512"
     }
   ],
-  "start_url": ".",
+  "start_url": "/",
   "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "theme_color": "#141212",
+  "background_color": "#222020",
+  "shortcuts": [
+    {
+      "name": "Home",
+      "short_name": "Home",
+      "description": "Page initial",
+      "url": "/",
+      "icons": [{ "src": "/logo192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Portafolio",
+      "short_name": "Portafolio",
+      "description": "Portafolio",
+      "url": "/Portafolio",
+      "icons": [{ "src": "/logo192.png", "sizes": "192x192" }]
+    }
+  ]
 }

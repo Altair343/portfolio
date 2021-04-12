@@ -1,0 +1,112 @@
+.ContentData{
+    background-color: $color-secondary;
+    color: #fff;
+    width: 100%;
+}
+
+.content-Page{
+    background-color: $color-secondary;
+    color: #fff;
+    width: 100%;
+    min-height : calc(100vh - 6.2rem);
+    padding-bottom: 2rem;
+    
+
+
+    &.portafolio{
+        width: 100%;
+        display: flex;
+        justify-content: center;
+
+        .content-proyects{
+            width: 90%;
+            display: grid;
+            grid-template-columns: repeat(4,1fr);
+            grid-gap: 1rem;
+            align-items: center;
+
+            @include fromMax(l) {
+                grid-template-columns: repeat(2,1fr);            
+            }
+        }
+    }
+
+    &.details{
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        .ConteinerDetails{
+            width: 75%;
+            height: 100%;
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            grid-template-rows: 1fr;
+
+            &__text{
+                width: auto;
+                height: auto;
+                margin: 2rem 0;
+                margin-top: .5rem;    
+            }
+
+            @include fromMax(lx){
+                width: 80%;
+            }
+
+            @include fromMax(l){
+                width: 90%;
+                grid-template-columns: 1fr;
+                flex-direction: column;
+            }
+        }
+
+        @include fromMax(l) {
+            align-items: flex-start;
+        }
+
+
+    }
+
+    @include fromMax(l) {
+        max-height : auto;
+        padding: 2rem 0;
+        padding-top: .5rem;
+    }
+}
+
+
+.ConteinerDetails__img{
+    width:25rem;
+    display: flex;
+    justify-content: center;
+    margin: 2rem 0;
+    margin-right: 4rem;
+
+    &.state-Movile{
+        display: none;
+
+        @include fromMax(l){
+            display: block;
+        }        
+    }
+
+    &.state-Web{
+        display: block;
+        
+        @include fromMax(l){
+            display: none;
+        }        
+    }
+
+    img{
+        width: 100%;
+        height: auto;
+    }
+
+    @include fromMax(l){
+        width: 20rem;
+        margin: 0 auto;
+    }
+}

@@ -1,0 +1,63 @@
+<svg iid="logoAV" class="logoAV" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 557.86865 161.29883">
+  <defs> 
+    <style>
+      .a, .v, .dos {
+        fill: #1F1F1F;
+        stroke: #fff;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-width: 2px;
+      }
+
+      .a {
+        stroke-dasharray: 559;
+        stroke-dashoffset: 559;
+        animation: av-linear 2s 1s forwards, av-color 2s 3s forwards;
+      }
+
+      .v {
+        fill: #1F1F1F;
+        stroke: #fff;
+        stroke-dasharray: 691;
+        stroke-dashoffset: 691;
+        animation: av-linear 2s 1.4s forwards, av-color 2s 3.2s forwards;
+      }
+
+      .dos {
+        fill: #1F1F1F;
+        stroke: #fff;
+        stroke-dasharray: 416;
+        stroke-dashoffset: 416;
+        animation: av-linear 2s 1.4s forwards, av-color 2s 3.2s forwards;
+      }
+
+      @keyframes av-linear {
+        to {
+          stroke-dashoffset: 0;
+        }
+      }
+      @keyframes av-color {
+        to {
+          fill: #fff;
+        }
+      }
+    </style>
+  </defs>
+  <g>
+      <path
+          class="dos"
+          fill="#fff" 
+          d="M607.24365,482.11914H793.99316V502.915H607.24365Zm17.67676-121.86621h151.396v20.79639h-151.396Z"
+          transform="translate(-606.24365 -346.77539)"/>
+      <path
+          class="a"
+          fill="#fff"
+          d="M983.02344,507.07422h-25.3711l-14.34961-46.791H894.63965l-13.72559,46.791H856.167L904.83008,347.9834h29.53027Zm-43.67188-65.29981L926.874,400.18164c-2.91113-10.39844-5.61523-21.62793-7.90234-31.40234h-.416c-2.28808,9.77441-4.7832,21.41992-7.4873,31.19433l-12.68555,41.80078Z"
+          transform="translate(-606.24365 -346.77539)"/>
+      <path
+          class="v"
+          fill="#fff"
+          d="M1163.1123,347.9834l-51.57421,159.09082h-26.82715l-48.24707-159.29883H1062.875l21.00391,74.86621c5.82324,20.17188,11.02148,39.7207,14.97363,58.85352h.623c3.74414-18.92481,9.35839-39.09668,15.38964-58.64551l22.46-74.86621Z"
+          transform="translate(-606.24365 -346.77539)"/>
+  </g>
+</svg>

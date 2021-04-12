@@ -1,0 +1,83 @@
+.Content-title{
+
+    &__title{
+        margin: 0;
+        margin-bottom: 1.2rem;
+        font-size: 2rem;
+        font-weight: 600;
+
+        @include fromMax(l){
+           padding: 0 auto;
+        }
+
+        @include fromMax(s){
+            font-size: 1.5rem;
+        }
+        
+    }
+
+}
+
+.Content-description{
+    padding-right: 5rem;
+    margin: 1rem 0;
+
+    &__description{
+        margin: 0;
+    }
+
+    @include fromMax(l){
+        padding-right: 1rem;
+    }
+
+    @include fromMax(s){
+        padding-right: 0;
+    }
+               
+}
+
+.Content-links{
+    display: flex;
+    flex-direction: column;
+}
+
+.title-link{
+    width: 100%;
+    margin-top: 1rem;
+    border-bottom: 1px solid $color-grey;
+
+    &__item{
+       margin: 0;
+       padding-bottom: .5rem;
+    }
+}
+
+.icons{
+    display: flex;
+    flex-direction: row;
+    margin-top: .5rem;
+
+    &__item{
+        margin-right:1rem;
+        font-size: 1.5rem;
+
+        &-link{
+            text-decoration: none;
+            outline: none;
+            
+
+            &.behance{
+                color: #2172EB;
+            }
+
+            &.github{
+                color: #fff;
+            }
+        }
+
+        @include fromMax(s){
+            font-size: 2rem;
+        }
+ 
+    }
+}

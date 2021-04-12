@@ -1,0 +1,19 @@
+.main-header{
+    height: $header-height;
+    border-bottom: 1px solid $color-secondary;
+    background-color: $color-primary;
+}
+
+.main-header__block{
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+}
+
+.main-logo{
+    height: 1rem;
+}
+
+.main-logo-Dash{
+    height: 1.5rem;
+}
