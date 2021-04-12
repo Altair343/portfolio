@@ -1,5 +1,5 @@
 {
-  "short_name": "Portafolio",
+  "short_name": "Portafolio AV",
   "name": "Portafolio Andrés Vergara",
   "icons": [
     {
@@ -25,16 +25,23 @@
   "shortcuts": [
     {
       "name": "Home",
-      "short_name": "Home",
+      "short_name": "Home AV",
       "description": "Page initial",
       "url": "/",
       "icons": [{ "src": "/logo192.png", "sizes": "192x192" }]
     },
     {
       "name": "Portafolio",
-      "short_name": "Portafolio",
-      "description": "Portafolio",
+      "short_name": "Portafolio AV",
+      "description": "My portafolio",
       "url": "/Portafolio",
+      "icons": [{ "src": "/logo192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Skills",
+      "short_name": "Skills AV",
+      "description": "My skills",
+      "url": "/Skills",
       "icons": [{ "src": "/logo192.png", "sizes": "192x192" }]
     }
   ]
