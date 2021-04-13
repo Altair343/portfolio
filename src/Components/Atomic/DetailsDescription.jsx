@@ -25,7 +25,8 @@ const DetailsDescription = (props) => {
     } else {
         return (
             <div className="Content-description">
-                <p className="Content-description__description"> {props.description} </p>
+                <p className="Content-description__description" dangerouslySetInnerHTML={{ __html: props.description }}>  
+                 </p>
             </div>
         );
     }

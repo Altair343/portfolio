@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 const Card = (props) =>(
     <div className = "contentCard">
         <div className="contentCard__link">
-            <a href={`/Portfolio/${ String(props.id)}`} className ="contentCard__link__item">Detalles</a>
+            <a href={`/Portfolio/${ String(props.id)}`} className ="contentCard__link__item">Details</a>
         </div>
         <div className="contentCard__img">
             <img src={props.imgLikn} alt={props.title}/>

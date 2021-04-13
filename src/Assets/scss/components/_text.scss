@@ -64,15 +64,6 @@
         &-link{
             text-decoration: none;
             outline: none;
-            
-
-            &.behance{
-                color: #2172EB;
-            }
-
-            &.github{
-                color: #fff;
-            }
         }
 
         @include fromMax(s){
@@ -81,3 +72,17 @@
  
     }
 }
+
+.behance{
+    color: #fff;
+    &:hover{
+        color: #2172EB;
+    }
+    
+}
+
+.github{
+    color: #fff;
+}
+
+

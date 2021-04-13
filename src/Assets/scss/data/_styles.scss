@@ -148,8 +148,21 @@
 .icons-socials{
     margin-top: 2rem;
     display: flex;
-    justify-content: space-around;
+    flex-direction: row;
+    padding-left: 2rem;
+
+    @include fromMax(l) {
+        padding:0;
+    }
 }
 
+.icons-social{
+    padding: 0 2rem;
+    font-size: 1.7rem;
+
+    &:nth-child(2), &:nth-child(3){
+        padding-left: 0;
+    }
+}
 
 
