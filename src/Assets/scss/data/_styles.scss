@@ -1,57 +1,58 @@
-.ContentData{
+.ContentData {
     background-color: $color-secondary;
     color: #fff;
     width: 100%;
 }
 
-.content-Page{
+.content-Page {
     width: 100%;
-    min-height : calc(100vh - 6.2rem);
+    min-height: calc(100vh - 6.2rem);
     padding-bottom: 2rem;
+    overflow: hidden;
 
-    &.portafolio{
+    &.portafolio {
         width: 100%;
         display: flex;
         justify-content: center;
 
-        .content-proyects{
+        .content-proyects {
             width: 90%;
             display: grid;
-            grid-template-columns: repeat(4,1fr);
+            grid-template-columns: repeat(4, 1fr);
             grid-gap: 1rem;
             align-items: center;
 
             @include fromMax(l) {
-                grid-template-columns: repeat(2,1fr);            
+                grid-template-columns: repeat(2, 1fr);
             }
         }
     }
 
-    &.details{
+    &.details {
         width: 100%;
         display: flex;
         align-items: center;
         justify-content: center;
 
-        .ConteinerDetails{
+        .ConteinerDetails {
             width: 75%;
             height: 100%;
             display: grid;
             grid-template-columns: 1fr 2fr;
             grid-template-rows: 1fr;
 
-            &__text{
+            &__text {
                 width: auto;
                 height: auto;
                 margin: 2rem 0;
-                margin-top: .5rem;    
+                margin-top: 0.5rem;
             }
 
-            @include fromMax(lx){
+            @include fromMax(lx) {
                 width: 80%;
             }
 
-            @include fromMax(l){
+            @include fromMax(l) {
                 width: 90%;
                 grid-template-columns: 1fr;
                 flex-direction: column;
@@ -61,48 +62,94 @@
         @include fromMax(l) {
             align-items: flex-start;
         }
-
-
     }
 
     @include fromMax(l) {
-        max-height : auto;
+        max-height: auto;
         padding: 2rem 0;
-        padding-top: .5rem;
+        padding-top: 0.5rem;
     }
 }
 
-
-.ConteinerDetails__img{
-    width:25rem;
+.ConteinerDetails__img {
+    width: 25rem;
     display: flex;
     justify-content: center;
     margin: 2rem 0;
     margin-right: 4rem;
 
-    &.state-Movile{
+    &.state-Movile {
         display: none;
 
-        @include fromMax(l){
+        @include fromMax(l) {
             display: block;
-        }        
+        }
     }
 
-    &.state-Web{
+    &.state-Web {
         display: block;
-        
-        @include fromMax(l){
+
+        @include fromMax(l) {
             display: none;
-        }        
+        }
     }
 
-    img{
+    img {
         width: 100%;
         height: auto;
     }
 
-    @include fromMax(l){
+    @include fromMax(l) {
         width: 20rem;
         margin: 0 auto;
     }
 }
+
+.section1 {
+    width: 100%;
+    min-height: calc(96vh - #{$header-height});
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+
+    &__title{
+        display: flex;
+        flex-direction: column;
+    }
+
+    &__about{
+        margin-top: 5rem;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        
+        &-body{
+            padding: 0 4rem;
+            padding-left: 10rem;
+        }
+
+        @include fromMax(l) {
+            margin: 0;
+            margin-top: 2rem;
+            align-items: center;
+
+            &-body{
+                padding: 0 1rem;
+            }
+        }
+    }
+
+    @include fromMax(l) {
+        display: flex;
+        flex-direction: column;
+    }
+}
+
+.icons-socials{
+    margin-top: 2rem;
+    display: flex;
+    justify-content: space-around;
+}
+
+
+

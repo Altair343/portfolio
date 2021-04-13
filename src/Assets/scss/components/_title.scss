@@ -1,0 +1,24 @@
+.contentName{
+    font-size: 70px;
+    font-weight: 600;
+    display: inline-block;
+    margin-top: 6rem;
+    margin-left: 3rem;
+
+    .sub{
+        display: flex;
+        flex-direction: row-reverse;
+        font-size: 50px;
+        color: $color-auxiliary;
+
+        @include fromMax(l){
+            font-size: 35px;
+        } 
+    }
+
+    @include fromMax(l){
+        font-size: 50px;
+        margin-top: 2rem;
+        margin-left:1rem;
+    } 
+}

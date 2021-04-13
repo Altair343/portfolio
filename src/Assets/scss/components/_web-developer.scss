@@ -1,0 +1,90 @@
+.webText{
+    width: 75%;
+    margin:  1rem 0;
+}
+
+.cls-1 {
+    fill: $color-secondary;
+    stroke: $color-auxiliary;
+    stroke-linejoin: round;
+    stroke-linecap: round;
+    stroke-width: 1px;
+}
+.w{
+    stroke-dasharray: 750;
+    stroke-dashoffset: 750;
+    animation: text-linear 4s 2s infinite alternate, text-color 3s 5s infinite alternate;
+}
+.e{
+    stroke-dasharray: 350;
+    stroke-dashoffset: 350;
+    animation: text-linear 4s 3s infinite alternate, text-color 3s 6s infinite alternate;
+    
+}
+.b{
+    stroke-dasharray: 357;
+    stroke-dashoffset: 357;
+    animation: text-linear 3s 2s infinite alternate, text-color 2.6s 5s infinite alternate;
+}
+
+.d{
+    stroke-dasharray: 358;
+    stroke-dashoffset: 358;
+    animation: text-linear 4.1s 3.3s infinite alternate, text-color 3.2s 6.3s infinite alternate;
+}
+.e2{
+    stroke-dasharray: 350;
+    stroke-dashoffset: 350;
+    animation: text-linear 4.3s 3.5s infinite alternate, text-color 3.3s 6.5s infinite alternate;
+    
+}
+.v{
+    stroke-dasharray: 323;
+    stroke-dashoffset: 323;
+    animation: text-linear 4.2s 3.6s infinite alternate, text-color 3.2s 6.6s infinite alternate;
+}
+
+.e3{
+    stroke-dasharray: 350;
+    stroke-dashoffset: 350;
+    animation: text-linear 4s 3.8s infinite alternate, text-color 3s 6.8s infinite alternate;
+    
+}
+.l{
+    stroke-dasharray: 262;
+    stroke-dashoffset: 262;
+    animation: text-linear 4.1s 3.4s infinite alternate, text-color 3.1s 6.4s infinite alternate;
+}
+.o{
+    stroke-dasharray: 245;
+    stroke-dashoffset: 245;
+    animation: text-linear 4s 3s infinite alternate, text-color 3s 6s infinite alternate;
+}
+.p{
+    stroke-dasharray: 358;
+    stroke-dashoffset: 358;
+    animation: text-linear 4.3s 3.5s infinite alternate, text-color 3.3s 6.5s infinite alternate;
+}
+.e4{
+    stroke-dasharray: 350;
+    stroke-dashoffset: 350;
+    animation: text-linear 4s 4s infinite alternate, text-color 3s 7s infinite alternate;
+    
+}
+.r{
+    stroke-dasharray: 265;
+    stroke-dashoffset: 265;
+    animation: text-linear 4.3s 3.5s infinite alternate, text-color 3.3s 6.5s infinite alternate;
+}
+
+@keyframes text-linear {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  @keyframes text-color {
+    to {
+      fill: $color-auxiliary;
+    }
+  }
