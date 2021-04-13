@@ -1,6 +1,6 @@
 {
-  "short_name": "Portafolio AV",
-  "name": "Portafolio Andrés Vergara",
+  "short_name": "Portfolio AV",
+  "name": "Portfolio Andrés Vergara",
   "icons": [
     {
       "src": "favicon.ico",
@@ -31,10 +31,10 @@
       "icons": [{ "src": "/logo192.png", "sizes": "192x192" }]
     },
     {
-      "name": "Portafolio",
-      "short_name": "Portafolio AV",
-      "description": "My portafolio",
-      "url": "/Portafolio",
+      "name": "Portfolio",
+      "short_name": "Portfolio AV",
+      "description": "My portfolio",
+      "url": "/Portfolio",
       "icons": [{ "src": "/logo192.png", "sizes": "192x192" }]
     },
     {

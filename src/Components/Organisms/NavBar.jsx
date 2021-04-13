@@ -12,7 +12,7 @@ class NavBar extends React.Component{
                     <nav className="main-nav" id ="main-nav">
                         <ul className="main-menu">
                             <li className="main-menu__item"><NavLink className="main-menu__link" exact to={`/`}>Home</NavLink></li>
-                            <li className="main-menu__item"><NavLink className="main-menu__link" to={`/Portafolio`}>Portafolio</NavLink></li>
+                            <li className="main-menu__item"><NavLink className="main-menu__link" to={`/Portfolio`}>Portfolio</NavLink></li>
                             <li className="main-menu__item"><NavLink className="main-menu__link" to={`/Skills`}>Skills</NavLink></li>
                         </ul>
                     </nav>

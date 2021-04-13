@@ -15,8 +15,8 @@ function App() {
       <NavBar />
         <Switch>
           <Route path = "/" exact component = { Home }/>
-          <Route path = "/Portafolio/:id" component = { Details }/>
-          <Route path = "/Portafolio" component = { Portafolio }/>
+          <Route path = "/Portfolio/:id" component = { Details }/>
+          <Route path = "/Portfolio" component = { Portafolio }/>
           <Route path = "/Skills" component = { Skills }/>
           <Route component = { Error404 } />
         </Switch>

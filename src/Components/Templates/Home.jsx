@@ -1,12 +1,19 @@
 import React from 'react';
 
-const Home = () =>{
+class Home extends React.Component {
+    render() {
+        return (
+            <>
+                <div className="content-Page">
+                   
+                </div>
+            </>
+        );
+    }
 
-    return (
-        <div className="content-Page">
-             Hola mundo desde un Templates
-        </div>
-    );
-};
+
+
+}
+
 
 export default Home;
