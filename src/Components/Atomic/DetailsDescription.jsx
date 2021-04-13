@@ -14,7 +14,7 @@ const DetailsDescription = (props) => {
         return (
             <SkeletonTheme color="#2B2A2A" highlightColor="#2F2F2F">
                 <div className="Content-description">
-                    <p className="Content-description__description"> <Skeleton count={6} /> </p>
+                    <p className="Content-description__description"> <Skeleton count={6} /></p>
                 </div>
             </SkeletonTheme >
         );
@@ -25,8 +25,7 @@ const DetailsDescription = (props) => {
     } else {
         return (
             <div className="Content-description">
-                <p className="Content-description__description" dangerouslySetInnerHTML={{ __html: props.description }}>  
-                 </p>
+                <p className="Content-description__description" dangerouslySetInnerHTML={{ __html: props.description }}></p>
             </div>
         );
     }

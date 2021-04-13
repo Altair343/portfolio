@@ -13,12 +13,12 @@ class Home extends React.Component {
                             <IconsMedia />
                         </div>
                         <div className="section1__about">
-                            <About />
+                            {/*  <About /> */}
                         </div>
                     </div>
-                    <div className="Section2">
+                    {/* <div className="section2">
 
-                    </div>
+                    </div> */}
                 </div>
             </>
         );

@@ -10,6 +10,7 @@
     stroke-linecap: round;
     stroke-width: 1px;
 }
+
 .w{
     stroke-dasharray: 750;
     stroke-dashoffset: 750;
@@ -19,7 +20,6 @@
     stroke-dasharray: 350;
     stroke-dashoffset: 350;
     animation: text-linear 4s 3s infinite alternate, text-color 3s 6s infinite alternate;
-    
 }
 .b{
     stroke-dasharray: 357;

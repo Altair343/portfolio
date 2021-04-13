@@ -14,7 +14,7 @@ const DetailsTitle = (props) => {
         return (
             <SkeletonTheme color="#2B2A2A" highlightColor="#2F2F2F">
                 <div className="Content-title">
-                    <h2 className="Content-title__title"> <Skeleton /></h2>
+                    <h2 className="Content-title__title"> <Skeleton/></h2>
                 </div>
             </SkeletonTheme >
         );
