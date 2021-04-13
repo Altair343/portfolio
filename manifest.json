@@ -1,0 +1,48 @@
+{
+  "short_name": "Portfolio AV",
+  "name": "Portfolio Andrés Vergara",
+  "icons": [
+    {
+      "src": "favicon.ico",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "logo192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "logo512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": "/",
+  "display": "standalone",
+  "theme_color": "#141212",
+  "background_color": "#222020",
+  "shortcuts": [
+    {
+      "name": "Home",
+      "short_name": "Home AV",
+      "description": "Page initial",
+      "url": "/",
+      "icons": [{ "src": "/logo192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Portfolio",
+      "short_name": "Portfolio AV",
+      "description": "My portfolio",
+      "url": "/Portfolio",
+      "icons": [{ "src": "/logo192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Skills",
+      "short_name": "Skills AV",
+      "description": "My skills",
+      "url": "/Skills",
+      "icons": [{ "src": "/logo192.png", "sizes": "192x192" }]
+    }
+  ]
+}
