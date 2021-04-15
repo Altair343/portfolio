@@ -1,0 +1,207 @@
+.skills {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    height: calc(100vh - #{$header-height});
+
+    &-content {
+        width: 100%;
+        height: auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    @include fromMax(l) {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+.textHtml {
+    fill: #fff;
+    transform: scale(0);
+    transform-origin: center top;
+}
+
+.grey {
+    fill: #ebebeb;
+    transform: scale(0);
+}
+
+.grey1 {
+    animation: svgScale 2s 1s forwards;
+}
+
+.grey2 {
+    transform-origin: bottom left;
+    animation: svgScale 2s 2.2s forwards;
+}
+
+.grey3 {
+    transform-origin: left center;
+    animation: svgScale 2s 3s forwards;
+}
+
+/* HTML */
+.svgHtml {
+    width: 100px;
+    transform: scale(0.94);
+    animation: svgScale 2s alternate infinite;
+
+    .base {
+        fill: #e44d26;
+        animation: svgOpacity 3s;
+    }
+
+    .luzOrange {
+        fill: #f16529;
+        opacity: 0;
+        animation: svgOpacityL 1.3s 2.2s forwards;
+    }
+
+    .withe1 {
+        fill: #ffffff;
+        transform-origin: top right;
+        transform: scale(0);
+        animation: svgScale 2s 2s forwards;
+    }
+
+    .withe2 {
+        fill: #ffffff;
+        transform-origin: bottom right;
+        transform: scale(0);
+        animation: svgScale 2s 1.2s forwards;
+    }
+
+    .textH {
+        animation: svgScale 2s 1s forwards;
+    }
+
+    .textT {
+        animation: svgScale 2s 1.5s forwards;
+    }
+
+    .textM {
+        animation: svgScale 2s 2s forwards;
+    }
+
+    .textL {
+        animation: svgScale 2s 2.5s forwards;
+    }
+}
+
+/* CSS */
+.svgCss {
+    width: 100px;
+    transform: scale(0.95);
+    animation: svgScale 2.3s 0.4s alternate infinite;
+    overflow: hidden;
+
+    .base {
+        fill: #264de4;
+        animation: svgOpacity 3s;
+    }
+    .luzBlue {
+        fill: #2965f1;
+        opacity: 0;
+        animation: svgOpacityL 1.3s 2.2s forwards;
+    }
+    .textC {
+        animation: svgScale 2s 1s forwards;
+    }
+    .textS1 {
+        animation: svgScale 2s 1.9s forwards;
+    }
+
+    .textS2 {
+        animation: svgScale 2s 1.4s forwards;
+    }
+
+    .withe3 {
+        fill: #ffffff;
+        transform-origin: center right;
+        transform: scale(0);
+        animation: svgScale 2s 1.2s forwards;
+    }
+}
+
+/* JS */
+.svgJs {
+    width: 100px;
+    transform: scale(0.90);
+    animation: svgScale 2s alternate infinite;
+
+    .base {
+        fill: #f7df1e;
+        transform: translateY(-500px);
+        animation: mover 3s 2s cubic-bezier(0.09, 0.64, 0.49, 1.31) forwards;
+
+        @keyframes mover {
+            75% { transform: translateY(300px); }
+            95% { transform: translateY(-20px); }
+            100% { transform: translateY(0); }
+        }
+    }
+
+    .javaS{
+        fill:#000000;
+    }
+
+    .j{
+        opacity: 0;
+        animation: svgOpacityL 1.3s 5.2s forwards;
+    }
+    .s{
+        opacity: 0;
+        animation: svgOpacityL 1.7s 5.7s forwards;
+    }
+}
+
+.svgLara {
+    width: 100px;
+    transform: scale(0.90);
+    animation: svgScale 1.5s alternate infinite;
+    overflow: hidden;
+
+    .laraLine{
+        fill: $color-secondary;
+        stroke: #FF2D20;
+        stroke-dasharray: 1050;
+        stroke-dashoffset: 1050;
+        animation: text-linear 4s 3s forwards, colorLara 3s 6s forwards; 
+
+        @keyframes colorLara {
+            to {
+              fill: #FF2D20;
+            }
+          }
+    }
+
+}
+
+.svgReac {
+    width: 100px;
+    transform: scale(0.90);
+    animation: svgScale 2s .4s alternate infinite;
+    overflow: hidden;
+
+   
+}
+
+@keyframes svgScale {
+    to {
+        transform: scale(1);
+    }
+}
+
+@keyframes svgOpacityL {
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes svgOpacity {
+    from {
+        opacity: 0;
+    }
+}

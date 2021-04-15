@@ -29,7 +29,7 @@
     "workbox-streams": "^5.1.3"
   },
   "scripts": {
-    "predeploy": " yarn build && echo 'andresvergara.me' > ./build/CNAME",
+    "predeploy": " yarn build && echo andresvergara.me > ./build/CNAME",
     "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
