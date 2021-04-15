@@ -1,8 +1,12 @@
+$width-svg: 90px;
+$width-svg2: 60px;
+
 .skills {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     grid-template-rows: repeat(3, 1fr);
-    height: calc(100vh - #{$header-height});
+    min-height: calc(100vh - #{$header-height});
+    max-height: auto;
 
     &-content {
         width: 100%;
@@ -44,7 +48,7 @@
 
 /* HTML */
 .svgHtml {
-    width: 100px;
+    width: $width-svg;
     transform: scale(0.94);
     animation: svgScale 2s alternate infinite;
 
@@ -92,10 +96,9 @@
 
 /* CSS */
 .svgCss {
-    width: 100px;
+    width: $width-svg;
     transform: scale(0.95);
     animation: svgScale 2.3s 0.4s alternate infinite;
-    overflow: hidden;
 
     .base {
         fill: #264de4;
@@ -127,8 +130,8 @@
 
 /* JS */
 .svgJs {
-    width: 100px;
-    transform: scale(0.90);
+    width: $width-svg;
+    transform: scale(0.9);
     animation: svgScale 2s alternate infinite;
 
     .base {
@@ -137,55 +140,109 @@
         animation: mover 3s 2s cubic-bezier(0.09, 0.64, 0.49, 1.31) forwards;
 
         @keyframes mover {
-            75% { transform: translateY(300px); }
-            95% { transform: translateY(-20px); }
-            100% { transform: translateY(0); }
+            75% {
+                transform: translateY(300px);
+            }
+            95% {
+                transform: translateY(-20px);
+            }
+            100% {
+                transform: translateY(0);
+            }
         }
     }
 
-    .javaS{
-        fill:#000000;
+    .javaS {
+        fill: #000000;
     }
 
-    .j{
+    .j {
         opacity: 0;
         animation: svgOpacityL 1.3s 5.2s forwards;
     }
-    .s{
+    .s {
         opacity: 0;
         animation: svgOpacityL 1.7s 5.7s forwards;
     }
 }
 
 .svgLara {
-    width: 100px;
-    transform: scale(0.90);
+    width: $width-svg;
+    transform: scale(0.9);
     animation: svgScale 1.5s alternate infinite;
-    overflow: hidden;
 
-    .laraLine{
+    .laraLine {
         fill: $color-secondary;
-        stroke: #FF2D20;
+        stroke: #ff2d20;
         stroke-dasharray: 1050;
         stroke-dashoffset: 1050;
-        animation: text-linear 4s 3s forwards, colorLara 3s 6s forwards; 
+        animation: text-linear 4s 3s forwards, colorLara 3s 6s forwards;
 
         @keyframes colorLara {
             to {
-              fill: #FF2D20;
+                fill: #ff2d20;
             }
-          }
+        }
     }
-
 }
 
 .svgReac {
-    width: 100px;
-    transform: scale(0.90);
-    animation: svgScale 2s .4s alternate infinite;
-    overflow: hidden;
+    width: $width-svg;
+    opacity: 0;
+    transform: scale(0.9);
+    animation: svgScale 2s 0.4s alternate infinite, svgOpacityL 1.3s 2.5s forwards;
 
-   
+    .reactR {
+        fill: #00d8ff;
+        transform-origin: center center;
+        animation: rotateReloj 4s alternate infinite;
+    }
+}
+
+.svgSass {
+    width: $width-svg;
+    opacity: 0;
+    transform: scale(0.9);
+    animation: svgScale 2s 0.4s alternate infinite, svgOpacityL 1.3s 2.2s forwards;
+}
+
+.svgPhoto {
+    width: $width-svg;
+    opacity: 0;
+    transform: scale(0.9);
+    animation: svgScale 2s 0.4s alternate infinite, svgOpacityL 1s 2.6s forwards;
+    enable-background: new 0 0 240 234;
+
+    .st0 {
+        fill: #001e36;
+    }
+
+    .st1 {
+        fill: #31a8ff;
+    }
+}
+
+.svgFigma {
+    width: $width-svg2;
+    opacity: 0;
+    transform: scale(0.9);
+    animation: svgScale 2s 0.4s alternate infinite, svgOpacityL 1.8s 2s forwards;
+}
+
+.svgIllus {
+    width: $width-svg;
+    opacity: 0;
+    transform: scale(0.9);
+    animation: svgScale 2s 0.4s alternate infinite, svgOpacityL 1.5s 2.5s forwards;
+    enable-background: new 0 0 240 234;
+
+    .st0 {
+        fill: #330000;
+    }
+
+    .st1 {
+        fill: #ff9a00;
+    }
 }
 
 @keyframes svgScale {
@@ -203,5 +260,11 @@
 @keyframes svgOpacity {
     from {
         opacity: 0;
+    }
+}
+
+@keyframes rotateReloj {
+    from {
+        transform: rotate(360deg);
     }
 }
