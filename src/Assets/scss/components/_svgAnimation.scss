@@ -166,6 +166,7 @@ $width-svg2: 60px;
     }
 }
 
+/*  Laravel */
 .svgLara {
     width: $width-svg;
     transform: scale(0.9);
@@ -186,6 +187,7 @@ $width-svg2: 60px;
     }
 }
 
+/*  React */
 .svgReac {
     width: $width-svg;
     opacity: 0;
@@ -199,6 +201,7 @@ $width-svg2: 60px;
     }
 }
 
+/*  Sass */
 .svgSass {
     width: $width-svg;
     opacity: 0;
@@ -206,6 +209,7 @@ $width-svg2: 60px;
     animation: svgScale 2s 0.4s alternate infinite, svgOpacityL 1.3s 2.2s forwards;
 }
 
+/*  Photoshop */
 .svgPhoto {
     width: $width-svg;
     opacity: 0;
@@ -222,6 +226,7 @@ $width-svg2: 60px;
     }
 }
 
+/*  Figma */
 .svgFigma {
     width: $width-svg2;
     opacity: 0;
@@ -229,6 +234,7 @@ $width-svg2: 60px;
     animation: svgScale 2s 0.4s alternate infinite, svgOpacityL 1.8s 2s forwards;
 }
 
+/*  illustrator */
 .svgIllus {
     width: $width-svg;
     opacity: 0;
@@ -268,3 +274,4 @@ $width-svg2: 60px;
         transform: rotate(360deg);
     }
 }
+
