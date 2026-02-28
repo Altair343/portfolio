@@ -1,15 +1,14 @@
 ---
 interface Props {
 	id: string;
-	class?: string;
 	particleCount?: number;
 	particleSpeed?: number;
 }
 
-const { id, class: className = '', particleCount = 20, particleSpeed = 0.6 } = Astro.props;
+const { id, particleCount = 20, particleSpeed = 0.6 } = Astro.props;
 ---
 
-<canvas id={id} class={`particles-canvas ${className}`} aria-hidden="true"></canvas>
+<canvas id={id} class="particles-canvas" aria-hidden="true"></canvas>
 
 <style>
 	.particles-canvas {
