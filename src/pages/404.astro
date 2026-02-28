@@ -1,0 +1,113 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Error404 from '../assets/img/error_404_v2.png?url';
+import Header from '../components/Header.astro';
+import SiteWrapper from '../components/SiteWrapper.astro';
+import ParticlesCanvas from '../components/ParticlesCanvas.astro';
+---
+
+<Layout>
+	<SiteWrapper>
+		<Header active="home" />
+
+		<main class="error-page">
+			<ParticlesCanvas id="error-canvas" particleCount={16} />
+			<div class="error-inner">
+				<img src={Error404} alt="404 Error" class="error-image" />
+				<h2 class="error-message">
+					Se ha producido un error, la página que estás buscando no existe
+				</h2>
+				<a href="/" class="return-link">volver a <span class="home-text">.inicio()</span></a>
+			</div>
+		</main>
+	</SiteWrapper>
+</Layout>
+
+<style>
+	.error-page {
+		position: relative;
+		min-height: 100vh;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: 100px 64px 80px;
+	}
+
+	.error-inner {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		text-align: center;
+		position: relative;
+		z-index: 1;
+		max-width: 700px;
+	}
+
+	.error-image {
+		width: auto;
+		max-width: 100%;
+		height: auto;
+		max-height: 300px;
+		margin: 0 0 32px;
+		display: block;
+	}
+
+	.error-message {
+		margin: 0 0 40px;
+		font-family: var(--font-body);
+		color: var(--text-primary);
+		font-weight: 400;
+		font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+		line-height: 1.6;
+		letter-spacing: 0.02em;
+	}
+
+	.return-link {
+		display: inline-flex;
+		align-items: center;
+		gap: var(--spacing-xs);
+		padding: 11px 22px;
+		border-radius: var(--radius-none);
+		border: 1px solid var(--border-medium);
+		background: var(--bg-primary);
+		color: var(--text-secondary);
+		text-decoration: none;
+		font-family: var(--font-body);
+		font-weight: 500;
+		font-size: 0.95rem;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		transition: background-color var(--transition-normal), border-color var(--transition-normal), color var(--transition-normal);
+	}
+
+	.return-link:hover {
+		background: var(--bg-hover);
+		border-color: var(--border-strong);
+		color: var(--text-white);
+		transform: none;
+	}
+
+	.home-text {
+		color: var(--accent-blue);
+		font-weight: 600;
+	}
+
+	.return-link:hover .home-text {
+		color: var(--accent-blue-light);
+	}
+
+	@media (max-width: 768px) {
+		.error-page {
+			padding: 80px 28px 40px;
+		}
+
+		.error-image {
+			max-height: 200px;
+			margin-bottom: 24px;
+		}
+
+		.error-message {
+			margin-bottom: 32px;
+		}
+	}
+</style>

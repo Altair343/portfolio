@@ -1,0 +1,55 @@
+---
+interface Props {
+	showFooter?: boolean;
+}
+
+const { showFooter = true } = Astro.props;
+---
+
+<div class="site">
+	<slot />
+	{showFooter && (
+		<footer class="site-footer">Developed and designed by Andrés Vergara. ©2026</footer>
+	)}
+</div>
+
+<style is:global>
+	.site {
+		position: relative;
+		min-height: 100vh;
+		overflow: hidden;
+		background: radial-gradient(1200px 600px at 10% 10%, rgba(72,61,139,0.12), transparent 8%),
+						radial-gradient(800px 400px at 90% 80%, rgba(58,123,213,0.08), transparent 8%),
+						linear-gradient(180deg,#161416 0%, #1b191a 100%);
+	}
+
+	.site::after {
+		content: '';
+		position: absolute;
+		inset: 0;
+		background-image: linear-gradient(transparent 0 1px, rgba(255,255,255,0.01) 1px),
+						linear-gradient(90deg, transparent 0 1px, rgba(255,255,255,0.01) 1px);
+		background-size: 100% 24px, 24px 100%;
+		pointer-events: none;
+		opacity: 0.03;
+	}
+
+	.site-footer {
+		position: fixed;
+		left: 0;
+		right: 0;
+		bottom: 10px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		color: rgba(220,225,255,0.35);
+		font-size: 0.75rem;
+		z-index: 50;
+	}
+
+	@media (max-width: 768px) {
+		.site::after {
+			opacity: 0.02;
+		}
+	}
+</style>

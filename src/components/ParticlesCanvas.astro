@@ -1,0 +1,141 @@
+---
+interface Props {
+	id: string;
+	class?: string;
+	particleCount?: number;
+	particleSpeed?: number;
+}
+
+const { id, class: className = '', particleCount = 20, particleSpeed = 0.6 } = Astro.props;
+---
+
+<canvas id={id} class={`particles-canvas ${className}`} aria-hidden="true"></canvas>
+
+<style>
+	.particles-canvas {
+		position: absolute;
+		inset: 0;
+		width: 100%;
+		height: 100%;
+		z-index: 0;
+		pointer-events: none;
+	}
+</style>
+
+<script define:vars={{ id, particleCount, particleSpeed }}>
+	const canvas = document.getElementById(id);
+	if (canvas) {
+		const ctx = canvas.getContext('2d');
+		const dpr = Math.max(1, window.devicePixelRatio || 1);
+		let particles = [];
+		let rafId;
+
+		function fitCanvas() {
+			const rect = canvas.getBoundingClientRect();
+			canvas.width = Math.max(1, Math.floor(rect.width * dpr));
+			canvas.height = Math.max(1, Math.floor(rect.height * dpr));
+			canvas.style.width = rect.width + 'px';
+			canvas.style.height = rect.height + 'px';
+			ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+		}
+
+		function initParticles() {
+			const rect = canvas.getBoundingClientRect();
+			const count = Math.max(particleCount, Math.round(rect.width / 60));
+			particles = [];
+			for (let i = 0; i < count; i++) {
+				particles.push({
+					x: Math.random() * rect.width,
+					y: Math.random() * rect.height,
+					size: 8 + Math.random() * 18,
+					vx: (Math.random() - 0.5) * particleSpeed,
+					vy: (Math.random() - 0.5) * particleSpeed,
+					alpha: 0.08 + Math.random() * 0.18,
+					rotation: Math.random() * Math.PI * 2,
+					rotationSpeed: (Math.random() - 0.5) * 0.01,
+					type: Math.floor(Math.random() * 4),
+				});
+			}
+		}
+
+		function drawGlyph(p) {
+			ctx.save();
+			ctx.translate(p.x, p.y);
+			ctx.rotate(p.rotation);
+			ctx.strokeStyle = `rgba(150,170,255,${p.alpha})`;
+			ctx.lineWidth = 1;
+			ctx.lineCap = 'square';
+
+			if (p.type === 0) {
+				const len = p.size;
+				ctx.beginPath();
+				ctx.moveTo(-len * 0.5, 0);
+				ctx.lineTo(-len * 0.12, -len * 0.2);
+				ctx.lineTo(len * 0.1, len * 0.22);
+				ctx.lineTo(len * 0.45, -len * 0.05);
+				ctx.stroke();
+			} else if (p.type === 1) {
+				const len = p.size * 0.55;
+				ctx.beginPath();
+				ctx.moveTo(-len, 0);
+				ctx.lineTo(len, 0);
+				ctx.moveTo(0, -len);
+				ctx.lineTo(0, len);
+				ctx.stroke();
+			} else if (p.type === 2) {
+				const r = p.size * 0.35;
+				ctx.beginPath();
+				ctx.arc(0, 0, r, Math.PI * 0.1, Math.PI * 1.6);
+				ctx.stroke();
+			} else {
+				const len = p.size * 0.55;
+				ctx.beginPath();
+				ctx.moveTo(-len, -len * 0.35);
+				ctx.lineTo(len, len * 0.35);
+				ctx.moveTo(-len * 0.8, len * 0.35);
+				ctx.lineTo(len * 0.8, -len * 0.35);
+				ctx.stroke();
+			}
+
+			ctx.restore();
+		}
+
+		function animate() {
+			const w = canvas.width / dpr;
+			const h = canvas.height / dpr;
+			ctx.clearRect(0, 0, w, h);
+			
+			for (const p of particles) {
+				drawGlyph(p);
+
+				p.x += p.vx;
+				p.y += p.vy;
+				p.rotation += p.rotationSpeed;
+
+				if (p.x < -20) p.x = w + 20;
+				if (p.x > w + 20) p.x = -20;
+				if (p.y < -20) p.y = h + 20;
+				if (p.y > h + 20) p.y = -20;
+			}
+
+			rafId = requestAnimationFrame(animate);
+		}
+
+		fitCanvas();
+		initParticles();
+		animate();
+
+		let resizeTimeout;
+		window.addEventListener('resize', () => {
+			clearTimeout(resizeTimeout);
+			resizeTimeout = setTimeout(() => {
+				fitCanvas();
+				initParticles();
+			}, 200);
+		});
+
+		window.addEventListener('beforeunload', () => {
+			if (rafId) cancelAnimationFrame(rafId);
+		});
+	}
+</script>

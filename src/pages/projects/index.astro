@@ -1,0 +1,172 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { projects } from '../../data/projects';
+import Header from '../../components/Header.astro';
+import SiteWrapper from '../../components/SiteWrapper.astro';
+import ParticlesCanvas from '../../components/ParticlesCanvas.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+
+const featuredProjects = projects.filter(p => p.featured);
+const otherProjects = projects.filter(p => !p.featured);
+---
+
+<Layout>
+	<SiteWrapper>
+		<Header active="projects" />
+
+		<main class="projects-page">
+			<ParticlesCanvas id="projects-canvas" />
+			
+			<div class="projects-container">
+				<div class="page-header">
+					<h1 class="page-title">Portafolio</h1>
+					<p class="page-subtitle">Una colección de mis trabajos y proyectos recientes</p>
+				</div>
+
+				{featuredProjects.length > 0 && (
+					<section class="section">
+						<div class="projects-grid featured">
+							{featuredProjects.map(project => (
+								<ProjectCard project={project} />
+							))}
+						</div>
+					</section>
+				)}
+
+				{otherProjects.length > 0 && (
+					<section class="section">
+						<h2 class="section-title">Otros Proyectos</h2>
+						<div class="projects-grid">
+							{otherProjects.map(project => (
+								<ProjectCard project={project} />
+							))}
+						</div>
+					</section>
+				)}
+			</div>
+		</main>
+	</SiteWrapper>
+</Layout>
+
+<style>
+	.projects-page {
+		position: relative;
+		min-height: 100vh;
+		padding: 100px 40px 80px;
+	}
+
+	.projects-container {
+		position: relative;
+		z-index: 1;
+		max-width: 1200px;
+		margin: 0 auto;
+	}
+
+	.page-header {
+		text-align: center;
+		margin-bottom: 64px;
+	}
+
+	.page-title {
+		margin: 0 0 16px;
+		font-family: var(--font-heading);
+		font-weight: 800;
+		font-size: clamp(2.5rem, 6vw, 4rem);
+		line-height: 1;
+		color: var(--text-white);
+		letter-spacing: 0.12em;
+	}
+
+	.page-subtitle {
+		margin: 0;
+		font-family: var(--font-body);
+		color: var(--text-muted);
+		font-size: 1.1rem;
+		letter-spacing: 0.02em;
+	}
+
+	.section {
+		margin-bottom: 64px;
+	}
+
+	.section-title {
+		margin: 0 0 var(--spacing-xl);
+		font-family: var(--font-heading);
+		font-size: 1.5rem;
+		letter-spacing: 0.12em;
+		color: var(--text-heading);
+	}
+
+	.projects-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+		gap: 28px;
+	}
+
+	.projects-grid.featured {
+		grid-template-columns: repeat(auto-fill, minmax(450px, 1fr));
+		gap: 32px;
+	}
+
+	@media (max-width: 1024px) {
+		.projects-grid.featured {
+			grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+		}
+	}
+
+	@media (max-width: 768px) {
+		.projects-page {
+			padding: 80px 20px 60px;
+		}
+
+		.page-header {
+			margin-bottom: 40px;
+		}
+
+		.projects-grid,
+		.projects-grid.featured {
+			grid-template-columns: 1fr;
+			gap: 24px;
+		}
+
+		.section {
+			margin-bottom: 48px;
+		}
+	}
+</style>
+
+<script>
+	// Initialize sliders for all project cards
+	function initSliders() {
+		const sliders = document.querySelectorAll('[data-slider]');
+
+		for (const slider of sliders) {
+			const slides = Array.from(slider.querySelectorAll('[data-slide]'));
+			if (slides.length <= 1) continue;
+
+			const prevButton = slider.querySelector('[data-slider-prev]');
+			const nextButton = slider.querySelector('[data-slider-next]');
+			const dots = Array.from(slider.querySelectorAll('[data-slider-dot]'));
+			let currentIndex = 0;
+
+			const renderSlide = (index: number) => {
+				currentIndex = (index + slides.length) % slides.length;
+				slides.forEach((slide, slideIndex) => {
+					slide.setAttribute('data-active', slideIndex === currentIndex ? 'true' : 'false');
+				});
+				dots.forEach((dot, dotIndex) => {
+					dot.classList.toggle('active', dotIndex === currentIndex);
+				});
+			};
+
+			prevButton?.addEventListener('click', () => renderSlide(currentIndex - 1));
+			nextButton?.addEventListener('click', () => renderSlide(currentIndex + 1));
+			dots.forEach((dot, dotIndex) => {
+				dot.addEventListener('click', () => renderSlide(dotIndex));
+			});
+		}
+	}
+
+	// Initialize on load
+	initSliders();
+</script>

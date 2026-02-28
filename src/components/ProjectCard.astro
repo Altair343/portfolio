@@ -1,0 +1,267 @@
+---
+import type { Project } from '../data/projects';
+
+interface Props {
+	project: Project;
+}
+
+const { project } = Astro.props;
+const getProjectImages = () =>
+	project.images && project.images.length > 0 ? project.images : [project.image];
+const images = getProjectImages();
+---
+
+<article class="project-card">
+	<div class="project-image project-slider" data-slider>
+		<div class="project-slides">
+			{images.map((image, index) => (
+				<img
+					src={image}
+					alt={`${project.title} image ${index + 1}`}
+					class="project-slide"
+					data-slide
+					data-active={index === 0 ? 'true' : 'false'}
+				/>
+			))}
+		</div>
+		{images.length > 1 && (
+			<>
+				<button type="button" class="slider-btn slider-btn-prev" data-slider-prev aria-label="Previous image">‹</button>
+				<button type="button" class="slider-btn slider-btn-next" data-slider-next aria-label="Next image">›</button>
+				<div class="slider-dots">
+					{images.map((_, index) => (
+						<button
+							type="button"
+							class={`slider-dot ${index === 0 ? 'active' : ''}`}
+							data-slider-dot
+							data-index={index}
+							aria-label={`Go to image ${index + 1}`}
+						></button>
+					))}
+				</div>
+			</>
+		)}
+	</div>
+	<div class="project-content">
+		<h3 class="project-title">{project.title}</h3>
+		<p class="project-description">{project.description}</p>
+		<div class="project-tech">
+			{project.technologies.map(tech => (
+				<span class="tech-tag">{tech}</span>
+			))}
+		</div>
+		<div class="project-links">
+			{project.githubUrl && (
+				<a href={project.githubUrl} class="project-link" target="_blank" rel="noopener noreferrer">
+					<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+						<path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+					</svg>
+					GitHub
+				</a>
+			)}
+			{project.liveUrl && (
+				<a href={project.liveUrl} class="project-link primary" target="_blank" rel="noopener noreferrer">
+					<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+						<path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+						<polyline points="15 3 21 3 21 9"></polyline>
+						<line x1="10" y1="14" x2="21" y2="3"></line>
+					</svg>
+					Live Demo
+				</a>
+			)}
+		</div>
+	</div>
+</article>
+
+<style>
+	.project-card {
+		display: flex;
+		flex-direction: column;
+		border-radius: var(--radius-none);
+		border: 1px solid var(--border-light);
+		background: var(--bg-primary);
+		overflow: hidden;
+		transition: border-color var(--transition-normal), background-color var(--transition-normal);
+	}
+
+	.project-card:hover {
+		transform: none;
+		border-color: var(--border-medium);
+		background: var(--bg-hover);
+	}
+
+	.project-image {
+		position: relative;
+		width: 100%;
+		aspect-ratio: 16/9;
+		background: var(--bg-secondary);
+		overflow: hidden;
+	}
+
+	.project-slides {
+		position: relative;
+		width: 100%;
+		height: 100%;
+	}
+
+	.project-slide {
+		position: absolute;
+		inset: 0;
+		opacity: 0;
+		transition: opacity var(--transition-slow);
+		pointer-events: none;
+	}
+
+	.project-slide[data-active='true'] {
+		opacity: var(--opacity-image);
+		pointer-events: auto;
+	}
+
+	.project-image img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		transition: opacity var(--transition-slow);
+	}
+
+	.project-card:hover .project-slide[data-active='true'] {
+		opacity: var(--opacity-image-hover);
+	}
+
+	.slider-btn {
+		position: absolute;
+		top: 50%;
+		transform: translateY(-50%);
+		width: 34px;
+		height: 34px;
+		border: 1px solid var(--border-medium);
+		border-radius: var(--radius-none);
+		background: var(--bg-primary);
+		color: var(--text-white);
+		font-size: 1.2rem;
+		line-height: 1;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		cursor: pointer;
+		z-index: 2;
+		transition: background-color var(--transition-normal), border-color var(--transition-normal);
+	}
+
+	.slider-btn:hover {
+		background: var(--bg-hover);
+		border-color: rgba(255,255,255,0.4);
+	}
+
+	.slider-btn-prev {
+		left: 10px;
+	}
+
+	.slider-btn-next {
+		right: 10px;
+	}
+
+	.slider-dots {
+		position: absolute;
+		left: 50%;
+		bottom: 10px;
+		transform: translateX(-50%);
+		display: flex;
+		gap: 6px;
+		z-index: 2;
+	}
+
+	.slider-dot {
+		width: 8px;
+		height: 8px;
+		border-radius: var(--radius-full);
+		border: none;
+		background: rgba(255,255,255,0.45);
+		cursor: pointer;
+		padding: 0;
+	}
+
+	.slider-dot.active {
+		background: var(--text-white);
+	}
+
+	.project-content {
+		padding: var(--spacing-lg);
+		display: flex;
+		flex-direction: column;
+		gap: var(--spacing-md);
+		flex: 1;
+	}
+
+	.project-title {
+		margin: 0;
+		font-family: var(--font-heading);
+		font-size: 1.35rem;
+		font-weight: 700;
+		color: var(--text-white);
+		letter-spacing: 0.02em;
+	}
+
+	.project-description {
+		margin: 0;
+		color: var(--text-tertiary);
+		font-size: 0.95rem;
+		line-height: 1.6;
+		flex: 1;
+	}
+
+	.project-tech {
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--spacing-xs);
+	}
+
+	.tech-tag {
+		padding: 6px 12px;
+		border-radius: var(--radius-none);
+		background: var(--bg-secondary);
+		border: 1px solid var(--accent-purple-alt);
+		color: var(--text-primary);
+		font-size: 0.8rem;
+		font-weight: 600;
+	}
+
+	.project-links {
+		display: flex;
+		gap: var(--spacing-sm);
+		margin-top: auto;
+	}
+
+	.project-link {
+		display: inline-flex;
+		align-items: center;
+		gap: var(--spacing-xs);
+		padding: 9px 14px;
+		border-radius: var(--radius-none);
+		border: 1px solid var(--border-medium);
+		background: var(--bg-primary);
+		color: var(--text-primary);
+		text-decoration: none;
+		font-size: 0.82rem;
+		font-weight: 600;
+		letter-spacing: 0.06em;
+		text-transform: uppercase;
+		transition: background-color var(--transition-normal), border-color var(--transition-normal), color var(--transition-normal);
+	}
+
+	.project-link:hover {
+		background: var(--bg-hover);
+		border-color: var(--border-medium);
+		color: var(--text-white);
+	}
+
+	.project-link.primary {
+		background: var(--accent-purple-bg);
+		border-color: var(--border-purple);
+	}
+
+	.project-link.primary:hover {
+		background: var(--accent-purple-bg-hover);
+		border-color: var(--border-purple-hover);
+	}
+</style>
