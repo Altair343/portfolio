@@ -8,7 +8,6 @@ import ParticlesCanvas from './ParticlesCanvas.astro';
 	<Header active="home" />
 
 	<main class="hero">
-		<canvas id="hero-canvas" class="hero-canvas" aria-hidden="true"></canvas>
 		<div class="hero-inner">
 			<h1 class="hero-title">¡Hola! Soy Andrés<br/>Vergara <span class="dash"> >_ </span></h1>
 			<h2 class="hero-sub" data-text="Desarrollador de software">Desarrollador de software</h2>
@@ -62,9 +61,7 @@ import ParticlesCanvas from './ParticlesCanvas.astro';
 </SiteWrapper>
 
 <style>
-	.hero { position: relative; padding-top: 140px; padding-left: 64px; width: 100vw; max-width: none; margin-left: calc(50% - 50vw); margin-right: calc(50% - 50vw); min-height: 100vh; display:flex; align-items:flex-start; border: 2px solid blue; }
-
-	.hero-canvas{position:absolute;inset:0;width:100vw;max-width:none;margin-left:calc(50% - 50vw);margin-right:calc(50% - 50vw);height:100%;z-index:0;pointer-events:none; border: 2px solid red;}
+	.hero { position: relative; padding-top: 140px; padding-left: 64px; width: 100vw; max-width: none; margin-left: calc(50% - 50vw); margin-right: calc(50% - 50vw); min-height: 100vh; display:flex; align-items:flex-start;}
 
 	.hero-inner{display:flex;flex-direction:column;position:relative;z-index:1}
 
@@ -103,20 +100,6 @@ import ParticlesCanvas from './ParticlesCanvas.astro';
 </style>
 
 <script type="module">
-	const heroCanvas = document.getElementById('hero-canvas');
-	if (heroCanvas) {
-		function fitCanvas(c) {
-			const rect = c.getBoundingClientRect();
-			const dpr = Math.max(1, window.devicePixelRatio || 1);
-			c.width = Math.max(1, Math.floor(rect.width * dpr));
-			c.height = Math.max(1, Math.floor(rect.height * dpr));
-			const ctx = c.getContext('2d');
-			ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-		}
-		fitCanvas(heroCanvas);
-		var context = heroCanvas.getContext('2d');
-	}
-
 	// Text scramble animation for hero-sub
 	class TextScramble {
 		constructor(el) {
