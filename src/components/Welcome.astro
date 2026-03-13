@@ -8,9 +8,10 @@ import ParticlesCanvas from './ParticlesCanvas.astro';
 	<Header active="home" />
 
 	<main class="hero">
+		<canvas id="hero-canvas" class="hero-canvas" aria-hidden="true"></canvas>
 		<div class="hero-inner">
 			<h1 class="hero-title">¡Hola! Soy Andrés<br/>Vergara <span class="dash"> >_ </span></h1>
-			<h2 class="hero-sub">Desarrollador de software</h2>
+			<h2 class="hero-sub" data-text="Desarrollador de software">Desarrollador de software</h2>
 			<div class="social-links">
 				<a href="https://github.com/Altair343" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="GitHub">
 					<svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
@@ -61,7 +62,9 @@ import ParticlesCanvas from './ParticlesCanvas.astro';
 </SiteWrapper>
 
 <style>
-	.hero { position: relative; padding-top: 140px; padding-left: 64px; width: 100vw; max-width: none; margin-left: calc(50% - 50vw); margin-right: calc(50% - 50vw); min-height: 100vh; display:flex; align-items:flex-start; }
+	.hero { position: relative; padding-top: 140px; padding-left: 64px; width: 100vw; max-width: none; margin-left: calc(50% - 50vw); margin-right: calc(50% - 50vw); min-height: 100vh; display:flex; align-items:flex-start; border: 2px solid blue; }
+
+	.hero-canvas{position:absolute;inset:0;width:100vw;max-width:none;margin-left:calc(50% - 50vw);margin-right:calc(50% - 50vw);height:100%;z-index:0;pointer-events:none; border: 2px solid red;}
 
 	.hero-inner{display:flex;flex-direction:column;position:relative;z-index:1}
 
@@ -69,7 +72,8 @@ import ParticlesCanvas from './ParticlesCanvas.astro';
 
 	.hero-title .dash{color:var(--accent-purple)}
 
-	.hero-sub{margin-top:18px;font-family:var(--font-body);color:var(--accent-purple);font-weight:600;font-size:1.6rem;letter-spacing:0.28em}
+	.hero-sub{margin-top:18px;font-family:var(--font-body);color:var(--accent-purple);font-weight:600;font-size:1.6rem;letter-spacing:0.28em;cursor:pointer}
+	.hero-sub .dud{color:rgba(167, 139, 250, 0.4)}
 
 	.social-links{display:flex;gap:var(--spacing-md);margin-top:var(--spacing-xl)}
 	.social-link{display:inline-flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:var(--radius-none);border:1px solid var(--border-medium);background:var(--bg-primary);color:var(--text-primary);transition:background-color var(--transition-normal),border-color var(--transition-normal),color var(--transition-normal);text-decoration:none}
@@ -97,3 +101,88 @@ import ParticlesCanvas from './ParticlesCanvas.astro';
 		.hero-sub{font-size:1.2rem}
 	}
 </style>
+
+<script type="module">
+	const heroCanvas = document.getElementById('hero-canvas');
+	if (heroCanvas) {
+		function fitCanvas(c) {
+			const rect = c.getBoundingClientRect();
+			const dpr = Math.max(1, window.devicePixelRatio || 1);
+			c.width = Math.max(1, Math.floor(rect.width * dpr));
+			c.height = Math.max(1, Math.floor(rect.height * dpr));
+			const ctx = c.getContext('2d');
+			ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+		}
+		fitCanvas(heroCanvas);
+		var context = heroCanvas.getContext('2d');
+	}
+
+	// Text scramble animation for hero-sub
+	class TextScramble {
+		constructor(el) {
+			this.el = el;
+			this.chars = '!<>-_\\/[]{}—=+*^?#________';
+			this.update = this.update.bind(this);
+		}
+
+		setText(newText) {
+			const oldText = this.el.innerText;
+			const length = Math.max(oldText.length, newText.length);
+			const promise = new Promise((resolve) => this.resolve = resolve);
+			this.queue = [];
+			for (let i = 0; i < length; i++) {
+				const from = oldText[i] || '';
+				const to = newText[i] || '';
+				const start = Math.floor(Math.random() * 40);
+				const end = start + Math.floor(Math.random() * 40);
+				this.queue.push({ from, to, start, end });
+			}
+			cancelAnimationFrame(this.frameRequest);
+			this.frame = 0;
+			this.update();
+			return promise;
+		}
+
+		update() {
+			let output = '';
+			let complete = 0;
+			for (let i = 0, n = this.queue.length; i < n; i++) {
+				let { from, to, start, end, char } = this.queue[i];
+				if (this.frame >= end) {
+					complete++;
+					output += to;
+				} else if (this.frame >= start) {
+					if (!char || Math.random() < 0.28) {
+						char = this.randomChar();
+						this.queue[i].char = char;
+					}
+					output += `<span class="dud">${char}</span>`;
+				} else {
+					output += from;
+				}
+			}
+			this.el.innerHTML = output;
+			if (complete === this.queue.length) {
+				this.resolve();
+			} else {
+				this.frameRequest = requestAnimationFrame(this.update);
+				this.frame++;
+			}
+		}
+
+		randomChar() {
+			return this.chars[Math.floor(Math.random() * this.chars.length)];
+		}
+	}
+
+	// Initialize text scramble effect
+	const heroSubElement = document.querySelector('.hero-sub');
+	if (heroSubElement) {
+		const fx = new TextScramble(heroSubElement);
+		const originalText = heroSubElement.getAttribute('data-text') || heroSubElement.innerText;
+		
+		heroSubElement.addEventListener('mouseenter', () => {
+			fx.setText(originalText);
+		});
+	}
+</script>
