@@ -5,7 +5,7 @@ interface Props {
 	active?: 'home' | 'projects' | 'skills';
 }
 
-const { active } = Astro.props;
+const { active } = Astro.props as Props;
 ---
 
 <header class="site-header">

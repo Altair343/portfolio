@@ -5,7 +5,7 @@ interface Props {
 	project: Project;
 }
 
-const { project } = Astro.props;
+const { project } = Astro.props as Props;
 const getProjectImages = () =>
 	project.images && project.images.length > 0 ? project.images : [project.image];
 const images = getProjectImages();
@@ -43,7 +43,7 @@ const images = getProjectImages();
 		)}
 	</div>
 	<div class="project-content">
-		<h3 class="project-title">{project.title}</h3>
+		<h3 class="project-title" data-text={project.title}>{project.title}</h3>
 		<p class="project-description">{project.description}</p>
 		<div class="project-tech">
 			{project.technologies.map(tech => (
@@ -200,6 +200,11 @@ const images = getProjectImages();
 		font-weight: 700;
 		color: var(--text-white);
 		letter-spacing: 0.02em;
+		cursor: pointer;
+	}
+
+	.project-title .dud {
+		color: rgba(167, 139, 250, 0.4);
 	}
 
 	.project-description {
@@ -265,3 +270,108 @@ const images = getProjectImages();
 		border-color: var(--border-purple-hover);
 	}
 </style>
+
+<script>
+	// Sequential text scramble animation for project titles
+	class SequentialTextScramble {
+		el: HTMLElement;
+		chars: string;
+		text?: string;
+		textArray: string[] = [];
+		currentIndex: number = 0;
+		revealIndex: number = 0;
+		frame: number = 0;
+		scrambleSpeed: number = 2;
+		revealOffset: number = 3;
+		scrambledChars: string[] = [];
+		revealedChars: string[] = [];
+		resolve?: () => void;
+		frameRequest?: number;
+
+		constructor(el: HTMLElement) {
+			this.el = el;
+			this.chars = '!<>-_\\/[]{}—=+*^?#@&%$';
+			this.update = this.update.bind(this);
+		}
+
+		setText(newText: string): Promise<void> {
+			const promise = new Promise<void>((resolve) => this.resolve = resolve);
+			this.text = newText;
+			this.textArray = newText.split('');
+			this.currentIndex = 0;
+			this.revealIndex = 0;
+			this.frame = 0;
+			this.scrambleSpeed = 2; // frames per character scramble
+			this.revealOffset = 3; // start revealing when 3 chars left
+			this.scrambledChars = new Array(this.textArray.length).fill('');
+			this.revealedChars = new Array(this.textArray.length).fill('');
+			
+			if (this.frameRequest) {
+				cancelAnimationFrame(this.frameRequest);
+			}
+			this.update();
+			return promise;
+		}
+
+		update(): void {
+			this.frame++;
+			
+			// Scramble phase: add scrambled characters from left to right
+			if (this.frame % this.scrambleSpeed === 0 && this.currentIndex < this.textArray.length) {
+				this.scrambledChars[this.currentIndex] = this.randomChar();
+				this.currentIndex++;
+			}
+			
+			// Reveal phase: start revealing correct chars when we're 3 chars away from completion
+			const shouldStartRevealing = this.currentIndex >= this.revealOffset;
+			if (shouldStartRevealing && this.frame % this.scrambleSpeed === 0 && this.revealIndex < this.textArray.length) {
+				this.revealedChars[this.revealIndex] = this.textArray[this.revealIndex];
+				this.revealIndex++;
+			}
+			
+			// Build output string
+			let output = '';
+			for (let i = 0; i < this.textArray.length; i++) {
+				if (this.revealedChars[i]) {
+					// Character has been revealed
+					output += this.revealedChars[i];
+				} else if (this.scrambledChars[i]) {
+					// Character is scrambled
+					if (Math.random() < 0.3) {
+						this.scrambledChars[i] = this.randomChar();
+					}
+					output += `<span class="dud">${this.scrambledChars[i]}</span>`;
+				} else {
+					// Empty space
+					output += ' ';
+				}
+			}
+			
+			this.el.innerHTML = output;
+			
+			// Check if animation is complete
+			if (this.revealIndex >= this.textArray.length) {
+				if (this.resolve) {
+					this.resolve();
+				}
+			} else {
+				this.frameRequest = requestAnimationFrame(this.update);
+			}
+		}
+
+		randomChar(): string {
+			return this.chars[Math.floor(Math.random() * this.chars.length)];
+		}
+	}
+
+	// Initialize text scramble effect for all project titles
+	const projectTitles = document.querySelectorAll<HTMLElement>('.project-title');
+	projectTitles.forEach((titleElement) => {
+		const fx = new SequentialTextScramble(titleElement);
+		const originalText = titleElement.getAttribute('data-text') || titleElement.innerText;
+		
+		titleElement.addEventListener('mouseenter', () => {
+			fx.setText(originalText);
+		});
+	});
+</script>
