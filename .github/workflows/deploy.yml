@@ -33,10 +33,12 @@ jobs:
       uses: actions/setup-node@v4
       with:
         node-version: '18'
-        cache: 'pnpm'
 
     - name: Install dependencies
-      run: pnpm install --frozen-lockfile
+      run: pnpm install --frozen-lockfile --force
+
+    - name: Ensure Tailwind Linux native binding
+      run: npm i @tailwindcss/oxide-linux-x64-gnu@4.2.1 --no-save
 
     - name: Build project
       run: pnpm run build
