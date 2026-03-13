@@ -14,5 +14,11 @@
     "astro": "5.17.1",
     "tailwindcss": "4.2.1",
     "typescript": "^5.9.3"
+  },
+  "pnpm": {
+    "supportedArchitectures": {
+      "os": ["win32", "linux"],
+      "cpu": ["x64"]
+    }
   }
 }
