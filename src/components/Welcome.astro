@@ -8,6 +8,7 @@ import ParticlesCanvas from './ParticlesCanvas.astro';
 	<Header active="home" />
 
 	<main class="hero">
+		<canvas id="hero-canvas" class="hero-canvas" aria-hidden="true"></canvas>
 		<div class="hero-inner">
 			<h1 class="hero-title">¡Hola! Soy Andrés<br/>Vergara <span class="dash"> >_ </span></h1>
 			<h2 class="hero-sub" data-text="Desarrollador de software">Desarrollador de software</h2>
@@ -61,7 +62,9 @@ import ParticlesCanvas from './ParticlesCanvas.astro';
 </SiteWrapper>
 
 <style>
-	.hero { position: relative; padding-top: 140px; padding-left: 64px; width: 100vw; max-width: none; margin-left: calc(50% - 50vw); margin-right: calc(50% - 50vw); min-height: 100vh; display:flex; align-items:flex-start;}
+	.hero { position: relative; padding-top: 140px; padding-left: 64px; width: 100vw; max-width: none; margin-left: calc(50% - 50vw); margin-right: calc(50% - 50vw); min-height: 100vh; display:flex; align-items:flex-start; }
+
+	.hero-canvas{position:absolute;inset:0;width:100vw;max-width:none;margin-left:calc(50% - 50vw);margin-right:calc(50% - 50vw);height:100%;z-index:0;pointer-events:none;}
 
 	.hero-inner{display:flex;flex-direction:column;position:relative;z-index:1}
 
@@ -100,6 +103,62 @@ import ParticlesCanvas from './ParticlesCanvas.astro';
 </style>
 
 <script type="module">
+	const heroCanvas = document.getElementById('hero-canvas');
+	if (heroCanvas) {
+		const context = heroCanvas.getContext('2d');
+		if (context) {
+			const symbolText = '██ ▌ ▌';
+			let viewport = { width: 0, height: 0 };
+
+			function fitCanvas(c, ctx) {
+				const rect = c.getBoundingClientRect();
+				const dpr = Math.max(1, window.devicePixelRatio || 1);
+				c.width = Math.max(1, Math.floor(rect.width * dpr));
+				c.height = Math.max(1, Math.floor(rect.height * dpr));
+				ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+				viewport = { width: rect.width, height: rect.height };
+			}
+
+			function drawHeroGlyphs(now) {
+				const t = now * 0.001;
+				const { width, height } = viewport;
+				context.clearRect(0, 0, width, height);
+
+				const baseSize = Math.max(34, Math.min(110, width * 0.08));
+				const centerX = width * 0.16;
+				const centerY = height * 0.36;
+
+				context.save();
+				context.font = `700 ${baseSize}px "JetBrains Mono", monospace`;
+				context.textBaseline = 'middle';
+				context.textAlign = 'left';
+
+				const waveY = Math.sin(t * 1.1) * 10;
+				const shimmer = 0.35 + (Math.sin(t * 2.1) + 1) * 0.2;
+				context.fillStyle = `rgba(167, 139, 250, ${shimmer.toFixed(3)})`;
+				context.shadowBlur = 26;
+				context.shadowColor = 'rgba(167, 139, 250, 0.45)';
+				context.fillText(symbolText, centerX, centerY + waveY);
+
+				context.fillStyle = 'rgba(255, 255, 255, 0.12)';
+				context.shadowBlur = 0;
+				for (let i = 0; i < 5; i++) {
+					const offset = (i + 1) * 2;
+					const driftX = Math.sin(t * 1.6 + i * 0.8) * 6;
+					const driftY = Math.cos(t * 1.2 + i * 0.6) * 4;
+					context.fillText(symbolText, centerX + driftX + offset, centerY + waveY + driftY + offset);
+				}
+
+				context.restore();
+				requestAnimationFrame(drawHeroGlyphs);
+			}
+
+			fitCanvas(heroCanvas, context);
+			window.addEventListener('resize', () => fitCanvas(heroCanvas, context));
+			requestAnimationFrame(drawHeroGlyphs);
+		}
+	}
+
 	// Text scramble animation for hero-sub
 	class TextScramble {
 		constructor(el) {
