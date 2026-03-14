@@ -84,12 +84,11 @@ const mediaItems = [
 	}),
 ];
 
-const hasVideo = mediaItems.some((item) => item.type === 'video');
 ---
 
 <section class="lab-entry-block" data-lab-entry-block>
 	<article class="lab-entry">
-		<div class="entry-thumb-wrap entry-slider" data-lab-slider>
+		<div class="entry-thumb-wrap" data-lab-slider>
 			<span class="entry-number">{entry.year}</span>
 			<div class="entry-slides">
 				{mediaItems.map((media, mediaIndex) => (

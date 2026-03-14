@@ -68,8 +68,7 @@ const featuredEntries = laboratoryEntries;
 	}
 
 	.hero-kicker,
-	.section-label,
-	.panel-label {
+	.section-label {
 		margin: 0 0 12px;
 		font-family: var(--font-heading);
 		font-size: 0.76rem;
@@ -90,48 +89,6 @@ const featuredEntries = laboratoryEntries;
 
 	.hero-title {
 		font-size: clamp(3rem, 8vw, 5.6rem);
-	}
-
-	.hero-description {
-		margin: 22px 0 0;
-		max-width: 66ch;
-		color: var(--text-secondary);
-		font-size: 1rem;
-		line-height: 1.8;
-	}
-
-	.hero-panel {
-		padding: 24px;
-		border: 1px solid var(--border-light);
-		background:
-			linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0)),
-			var(--bg-secondary);
-	}
-
-	.panel-list {
-		margin: 0;
-		padding: 0;
-		list-style: none;
-		display: grid;
-		gap: 12px;
-		color: var(--text-primary);
-		font-size: 0.95rem;
-		line-height: 1.6;
-	}
-
-	.panel-list li {
-		padding-left: 18px;
-		position: relative;
-	}
-
-	.panel-list li::before {
-		content: '';
-		position: absolute;
-		left: 0;
-		top: 10px;
-		width: 8px;
-		height: 8px;
-		background: var(--accent-blue-light);
 	}
 
 	.laboratory-section {
@@ -161,10 +118,6 @@ const featuredEntries = laboratoryEntries;
 		gap: 24px;
 	}
 
-	.entries-list.compact {
-		gap: 20px;
-	}
-
 	@media (max-width: 900px) {
 		.laboratory-hero {
 			grid-template-columns: 1fr;
@@ -185,8 +138,5 @@ const featuredEntries = laboratoryEntries;
 			flex-direction: column;
 		}
 
-		.hero-panel {
-			padding: 20px;
-		}
 	}
 </style>
