@@ -1,0 +1,805 @@
+---
+import type { LaboratoryEntry } from '../data/laboratory';
+
+interface Props {
+	entry: LaboratoryEntry;
+	index: number;
+}
+
+const { entry } = Astro.props as Props;
+
+const images = entry.images && entry.images.length > 0 ? entry.images : [entry.thumbnail];
+const videoFilePattern = /\.(mp4|webm|ogg|mov|m4v)(\?.*)?$/i;
+
+const isKnownVideoHost = (url: string): boolean => {
+	try {
+		const host = new URL(url).hostname.replace('www.', '');
+		return [
+			'youtube.com',
+			'm.youtube.com',
+			'youtu.be',
+			'vimeo.com',
+			'player.vimeo.com',
+			'dailymotion.com',
+			'player.dailymotion.com',
+		].includes(host);
+	} catch {
+		return false;
+	}
+};
+
+const toEmbedUrl = (url: string): string => {
+	try {
+		const parsedUrl = new URL(url);
+		const host = parsedUrl.hostname.replace('www.', '');
+
+		if (host === 'youtube.com' || host === 'm.youtube.com') {
+			const videoId = parsedUrl.searchParams.get('v');
+			if (videoId) {
+				return `https://www.youtube.com/embed/${videoId}`;
+			}
+		}
+
+		if (host === 'youtu.be') {
+			const videoId = parsedUrl.pathname.split('/').filter(Boolean)[0];
+			if (videoId) {
+				return `https://www.youtube.com/embed/${videoId}`;
+			}
+		}
+
+		if (host === 'vimeo.com') {
+			const videoId = parsedUrl.pathname.split('/').filter(Boolean)[0];
+			if (videoId) {
+				return `https://player.vimeo.com/video/${videoId}`;
+			}
+		}
+
+		return url;
+	} catch {
+		return url;
+	}
+};
+const mediaItems = [
+	...images.map((src, imageIndex) => {
+		const isVideo = videoFilePattern.test(src) || isKnownVideoHost(src);
+
+		if (!isVideo) {
+			return {
+				type: 'image' as const,
+				src,
+				imageIndex,
+			};
+		}
+
+		const videoMode = videoFilePattern.test(src) ? 'file' : 'embed';
+		const playbackUrl = videoMode === 'file' ? src : (entry.videoEmbedUrl ?? toEmbedUrl(src));
+
+		return {
+			type: 'video' as const,
+			src,
+			videoMode,
+			playbackUrl,
+			preview: entry.thumbnail,
+		};
+	}),
+];
+
+---
+
+<section class="lab-entry-block" data-lab-entry-block>
+	<article class="lab-entry">
+		<div class="entry-thumb-wrap" data-lab-slider>
+			<span class="entry-number">{entry.year}</span>
+			<div class="entry-slides">
+				{mediaItems.map((media, mediaIndex) => (
+					<button
+						type="button"
+						class="entry-media-btn"
+						data-lab-media-btn
+						data-lab-media-index={mediaIndex}
+						data-active={mediaIndex === 0 ? 'true' : 'false'}
+						data-lab-media-type={media.type}
+						data-lab-image-index={media.type === 'image' ? media.imageIndex : undefined}
+						data-lab-video-mode={media.type === 'video' ? media.videoMode : undefined}
+						data-lab-video-src={media.type === 'video' ? media.playbackUrl : undefined}
+						aria-label={
+							media.type === 'image'
+								? `Ver imagen completa ${media.imageIndex + 1} de ${entry.title}`
+								: `Reproducir video de ${entry.title}`
+						}
+					>
+						{media.type === 'image' ? (
+							<img
+								class="entry-media"
+								src={media.src}
+								alt={`${entry.title} imagen ${media.imageIndex + 1}`}
+								loading="lazy"
+								data-lab-media
+								data-active={mediaIndex === 0 ? 'true' : 'false'}
+								data-lab-image-src={media.src}
+							/>
+						) : (
+							<div class="entry-video-preview" data-lab-media data-active={mediaIndex === 0 ? 'true' : 'false'}>
+								<img class="entry-media" src={media.preview} alt={`Video de ${entry.title}`} loading="lazy" />
+								<span class="entry-video-overlay" aria-hidden="true">Play Video</span>
+							</div>
+						)}
+					</button>
+				))}
+			</div>
+
+			{mediaItems.length > 1 && (
+				<>
+					<button
+						type="button"
+						class="entry-slider-btn entry-slider-btn-prev"
+						data-lab-prev
+						aria-label="Elemento anterior"
+					>
+						&lt;
+					</button>
+					<button
+						type="button"
+						class="entry-slider-btn entry-slider-btn-next"
+						data-lab-next
+						aria-label="Elemento siguiente"
+					>
+						&gt;
+					</button>
+					<div class="entry-slider-dots">
+						{mediaItems.map((media, dotIndex) => (
+							<button
+								type="button"
+								class={`entry-slider-dot ${dotIndex === 0 ? 'active' : ''}`}
+								data-lab-dot
+								data-lab-dot-index={dotIndex}
+								aria-label={`Ir a ${media.type === 'image' ? 'imagen' : 'video'} ${dotIndex + 1}`}
+							></button>
+						))}
+					</div>
+				</>
+			)}
+		</div>
+
+		<div class="entry-body">
+			<div class="entry-copy">
+				<h2 class="entry-title">{entry.title}</h2>
+				<p class="entry-description">{entry.description}</p>
+			</div>
+
+			<div class="entry-tech">
+				{entry.technologies.map((technology) => (
+					<span class="entry-tag">{technology}</span>
+				))}
+			</div>
+
+			<div class="entry-actions">
+				{entry.githubUrl && (
+					<a href={entry.githubUrl} class="entry-link" target="_blank" rel="noopener noreferrer">
+						GitHub
+					</a>
+				)}
+                {entry.behanceUrl && (
+					<a href={entry.behanceUrl} class="entry-link" target="_blank" rel="noopener noreferrer">
+						Behance
+					</a>
+				)}
+				{entry.liveUrl && (
+					<a href={entry.liveUrl} class="entry-link entry-link-primary" target="_blank" rel="noopener noreferrer">
+						App
+					</a>
+				)}
+				{entry.downloadUrl && (
+					<a href={entry.downloadUrl} class="entry-link entry-link-download" target="_blank" rel="noopener noreferrer">
+						Descarga
+					</a>
+				)}
+			</div>
+		</div>
+	</article>
+
+	<dialog class="lab-lightbox" data-lab-lightbox>
+		<div class="lab-lightbox-inner">
+			<button type="button" class="lab-lightbox-close" data-lab-close aria-label="Cerrar vista completa">
+				x
+			</button>
+			<button type="button" class="lab-lightbox-nav lab-lightbox-prev" data-lab-lightbox-prev aria-label="Elemento anterior">
+				&lt;
+			</button>
+			<img class="lab-lightbox-image" data-lab-lightbox-image src="" alt="Imagen completa del proyecto" />
+			<video class="lab-lightbox-video" data-lab-lightbox-video controls preload="metadata" hidden>
+				Tu navegador no soporta reproduccion de video.
+			</video>
+			<iframe
+				class="lab-lightbox-embed"
+				data-lab-lightbox-embed
+				src="about:blank"
+				title={`Video de ${entry.title}`}
+				allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+				referrerpolicy="strict-origin-when-cross-origin"
+				allowfullscreen
+				hidden
+			></iframe>
+			<button type="button" class="lab-lightbox-nav lab-lightbox-next" data-lab-lightbox-next aria-label="Elemento siguiente">
+				&gt;
+			</button>
+			<p class="lab-lightbox-counter" data-lab-lightbox-counter></p>
+			<p class="lab-lightbox-kind" data-lab-lightbox-kind></p>
+		</div>
+	</dialog>
+</section>
+
+<style>
+	.lab-entry {
+		display: grid;
+		grid-template-columns: minmax(240px, 320px) minmax(0, 1fr);
+		align-items: stretch;
+		gap: 0;
+		border: 1px solid var(--border-light);
+		background:
+			linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0) 0%),
+			linear-gradient(135deg, rgba(89,43,216,0.14), rgba(20,18,18,0) 0%),
+			var(--bg-primary);
+		overflow: hidden;
+		position: relative;
+		transition: border-color var(--transition-normal), transform var(--transition-normal);
+	}
+
+	.lab-entry:hover {
+		border-color: var(--border-medium);
+		transform: translateY(-2px);
+	}
+
+	.entry-thumb-wrap {
+		grid-column: 1;
+		position: relative;
+		min-height: 100%;
+		background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0)), var(--bg-secondary);
+		border-right: 1px solid var(--border-light);
+		overflow: hidden;
+		isolation: isolate;
+	}
+
+	.entry-slides {
+		position: relative;
+		width: 100%;
+		height: 100%;
+	}
+
+	.entry-media-btn {
+		position: absolute;
+		inset: 0;
+		padding: 0;
+		border: 0;
+		background: transparent;
+		opacity: 0;
+		pointer-events: none;
+		transition: opacity var(--transition-slow);
+		cursor: pointer;
+	}
+
+	.entry-media-btn[data-active='true'] {
+		opacity: 1;
+		pointer-events: auto;
+	}
+
+	.entry-number {
+		position: absolute;
+		top: 14px;
+		left: 14px;
+		z-index: 3;
+		padding: 6px 10px;
+		background: rgba(20, 18, 18, 0.82);
+		border: 1px solid var(--border-medium);
+		font-family: var(--font-heading);
+		font-size: 0.7rem;
+		letter-spacing: 0.18em;
+		text-transform: uppercase;
+		color: var(--text-white);
+	}
+
+	.entry-media {
+		display: block;
+		width: 100%;
+		height: 100%;
+		min-height: 260px;
+		object-fit: cover;
+		opacity: 0.86;
+		transition: opacity var(--transition-slow);
+	}
+
+	.entry-video-preview {
+		position: relative;
+		width: 100%;
+		height: 100%;
+	}
+
+	.entry-video-overlay {
+		position: absolute;
+		left: 50%;
+		top: 50%;
+		transform: translate(-50%, -50%);
+		padding: 8px 14px;
+		border: 1px solid var(--border-medium);
+		background: rgba(0, 0, 0, 0.65);
+		font-size: 0.72rem;
+		font-weight: 700;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+		color: var(--text-white);
+		pointer-events: none;
+	}
+
+	.entry-slider-btn {
+		position: absolute;
+		top: 50%;
+		transform: translateY(-50%);
+		width: 34px;
+		height: 34px;
+		border: 1px solid var(--border-medium);
+		background: rgba(20, 18, 18, 0.82);
+		color: var(--text-white);
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		cursor: pointer;
+		z-index: 3;
+		font-size: 1.1rem;
+		line-height: 1;
+	}
+
+	.entry-slider-btn:hover {
+		background: rgba(20, 18, 18, 0.94);
+		border-color: var(--border-hover);
+	}
+
+	.entry-slider-btn-prev {
+		left: 12px;
+	}
+
+	.entry-slider-btn-next {
+		right: 12px;
+	}
+
+	.entry-slider-dots {
+		position: absolute;
+		left: 50%;
+		bottom: 12px;
+		transform: translateX(-50%);
+		display: flex;
+		gap: 6px;
+		z-index: 3;
+	}
+
+	.entry-slider-dot {
+		width: 8px;
+		height: 8px;
+		border-radius: 999px;
+		border: 0;
+		padding: 0;
+		background: rgba(255,255,255,0.42);
+		cursor: pointer;
+	}
+
+	.entry-slider-dot.active {
+		background: var(--text-white);
+	}
+
+	.entry-body {
+		grid-column: 2;
+		display: flex;
+		flex-direction: column;
+		gap: 20px;
+		padding: 28px;
+		position: relative;
+		z-index: 1;
+		background: var(--bg-primary);
+	}
+
+	.entry-copy {
+		display: flex;
+		flex-direction: column;
+		gap: 12px;
+	}
+
+	.entry-title {
+		margin: 0;
+		font-family: var(--font-heading);
+		font-size: clamp(1.5rem, 2vw, 2rem);
+		line-height: 1.05;
+		letter-spacing: 0.04em;
+		color: var(--text-white);
+	}
+
+	.entry-description {
+		margin: 0;
+		max-width: 68ch;
+		color: var(--text-secondary);
+		font-size: 0.98rem;
+		line-height: 1.75;
+	}
+
+	.entry-tech {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 10px;
+	}
+
+	.entry-tag {
+		padding: 8px 12px;
+		border: 1px solid var(--border-light);
+		background: rgba(255,255,255,0.03);
+		color: var(--text-primary);
+		font-size: 0.78rem;
+		font-weight: 600;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+	}
+
+	.entry-actions {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 12px;
+		margin-top: auto;
+	}
+
+	.entry-link {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		padding: 10px 16px;
+		border: 1px solid var(--border-medium);
+		background: rgba(255,255,255,0.02);
+		color: var(--text-white);
+		text-decoration: none;
+		font-size: 0.78rem;
+		font-weight: 700;
+		letter-spacing: 0.14em;
+		text-transform: uppercase;
+		transition: background-color var(--transition-normal), border-color var(--transition-normal), color var(--transition-normal);
+	}
+
+	.entry-link:hover {
+		background: rgba(255,255,255,0.06);
+		border-color: var(--border-hover);
+	}
+
+	.entry-link-primary {
+		background: var(--accent-purple-bg);
+		border-color: var(--border-purple);
+	}
+
+	.entry-link-primary:hover {
+		background: var(--accent-purple-bg-hover);
+		border-color: var(--border-purple-hover);
+	}
+
+	.entry-link-download {
+		border-color: rgba(154,163,214,0.5);
+		background: rgba(154,163,214,0.12);
+		color: var(--accent-blue-light);
+	}
+
+	.entry-link-download:hover {
+		background: rgba(154,163,214,0.2);
+		border-color: rgba(184,193,240,0.7);
+		color: var(--text-white);
+	}
+
+	.lab-lightbox {
+		width: min(92vw, 1200px);
+		margin: auto;
+		padding: 0;
+		border: 1px solid var(--border-light);
+		background: rgba(10, 10, 12, 0.96);
+	}
+
+	.lab-lightbox::backdrop {
+		background: rgba(0, 0, 0, 0.8);
+	}
+
+	.lab-lightbox-inner {
+		position: relative;
+		padding: 48px 56px 56px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.lab-lightbox-image {
+		display: block;
+		max-width: 100%;
+		max-height: 76vh;
+		object-fit: contain;
+	}
+
+	.lab-lightbox-video,
+	.lab-lightbox-embed {
+		display: block;
+		width: min(100%, 1080px);
+		max-height: 76vh;
+		aspect-ratio: 16 / 9;
+		border: 1px solid var(--border-light);
+		background: #000;
+	}
+
+	.lab-lightbox-close,
+	.lab-lightbox-nav {
+		border: 1px solid var(--border-medium);
+		background: rgba(20, 18, 18, 0.75);
+		color: var(--text-white);
+		cursor: pointer;
+	}
+
+	.lab-lightbox-close {
+		position: absolute;
+		top: 12px;
+		right: 12px;
+		width: 36px;
+		height: 36px;
+		font-size: 1.05rem;
+		text-transform: uppercase;
+	}
+
+	.lab-lightbox-nav {
+		position: absolute;
+		top: 50%;
+		transform: translateY(-50%);
+		width: 40px;
+		height: 40px;
+		font-size: 1.15rem;
+	}
+
+	.lab-lightbox-prev {
+		left: 12px;
+	}
+
+	.lab-lightbox-next {
+		right: 12px;
+	}
+
+	.lab-lightbox-counter {
+		position: absolute;
+		left: 50%;
+		bottom: 14px;
+		transform: translateX(-50%);
+		margin: 0;
+		padding: 6px 10px;
+		border: 1px solid var(--border-light);
+		background: rgba(0, 0, 0, 0.5);
+		font-size: 0.78rem;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		color: var(--text-primary);
+	}
+
+	.lab-lightbox-kind {
+		position: absolute;
+		left: 16px;
+		bottom: 14px;
+		margin: 0;
+		padding: 6px 10px;
+		border: 1px solid var(--border-light);
+		background: rgba(0, 0, 0, 0.5);
+		font-size: 0.72rem;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+		color: var(--text-primary);
+	}
+
+	@media (max-width: 900px) {
+		.lab-entry {
+			grid-template-columns: 1fr;
+			grid-template-rows: auto auto;
+		}
+
+		.entry-thumb-wrap {
+			grid-column: 1;
+			border-right: 0;
+			border-bottom: 1px solid var(--border-light);
+			min-height: 240px;
+			aspect-ratio: 16 / 9;
+		}
+
+		.entry-body {
+			grid-column: 1;
+		}
+
+		.entry-media {
+			min-height: 220px;
+		}
+	}
+
+	@media (max-width: 768px) {
+		.entry-thumb-wrap {
+			min-height: 220px;
+		}
+
+		.entry-body {
+			padding: 22px 18px;
+		}
+
+		.lab-lightbox {
+			width: min(96vw, 1200px);
+		}
+
+		.lab-lightbox-inner {
+			padding: 40px 42px 52px;
+		}
+
+		.lab-lightbox-nav {
+			width: 34px;
+			height: 34px;
+		}
+
+		.lab-lightbox-kind {
+			left: 10px;
+			bottom: 10px;
+		}
+	}
+</style>
+
+<script>
+	const labEntryBlocks = document.querySelectorAll('[data-lab-entry-block]');
+
+	for (const block of labEntryBlocks) {
+		const card = block.querySelector('[data-lab-slider]');
+		if (!(card instanceof HTMLElement)) {
+			continue;
+		}
+
+		const mediaButtons = Array.from(card.querySelectorAll('[data-lab-media-btn]'));
+		const mediaVisuals = Array.from(card.querySelectorAll('[data-lab-media]'));
+		const dots = Array.from(card.querySelectorAll('[data-lab-dot]'));
+		const prevButton = card.querySelector('[data-lab-prev]');
+		const nextButton = card.querySelector('[data-lab-next]');
+
+		const lightbox = block.querySelector('[data-lab-lightbox]');
+
+		if (mediaButtons.length === 0 || mediaVisuals.length === 0 || !(lightbox instanceof HTMLDialogElement)) {
+			continue;
+		}
+
+		const modalSources = mediaButtons.map((button) => {
+			const mediaType = button.getAttribute('data-lab-media-type') ?? 'image';
+			if (mediaType === 'video') {
+				return {
+					type: 'video',
+					videoMode: button.getAttribute('data-lab-video-mode') ?? 'embed',
+					src: button.getAttribute('data-lab-video-src') ?? '',
+					alt: button.getAttribute('aria-label') ?? 'Video',
+				};
+			}
+
+			const image = button.querySelector('[data-lab-image-src]');
+			return {
+				type: 'image',
+				src: image?.getAttribute('data-lab-image-src') ?? '',
+				alt: image?.getAttribute('alt') ?? 'Imagen completa del proyecto',
+			};
+		});
+
+		const lightboxImage = lightbox.querySelector('[data-lab-lightbox-image]');
+		const lightboxVideo = lightbox.querySelector('[data-lab-lightbox-video]');
+		const lightboxEmbed = lightbox.querySelector('[data-lab-lightbox-embed]');
+		const lightboxCounter = lightbox.querySelector('[data-lab-lightbox-counter]');
+		const lightboxKind = lightbox.querySelector('[data-lab-lightbox-kind]');
+		const lightboxPrev = lightbox.querySelector('[data-lab-lightbox-prev]');
+		const lightboxNext = lightbox.querySelector('[data-lab-lightbox-next]');
+		const lightboxClose = lightbox.querySelector('[data-lab-close]');
+
+		let currentMediaIndex = 0;
+
+		const renderMedia = (index: number) => {
+			currentMediaIndex = (index + mediaButtons.length) % mediaButtons.length;
+
+			mediaButtons.forEach((button, buttonIndex) => {
+				button.setAttribute('data-active', buttonIndex === currentMediaIndex ? 'true' : 'false');
+			});
+
+			mediaVisuals.forEach((visual, visualIndex) => {
+				visual.setAttribute('data-active', visualIndex === currentMediaIndex ? 'true' : 'false');
+			});
+
+			dots.forEach((dot, dotIndex) => {
+				dot.classList.toggle('active', dotIndex === currentMediaIndex);
+			});
+		};
+
+		const renderLightbox = (index: number) => {
+			if (modalSources.length === 0) {
+				return;
+			}
+
+			currentMediaIndex = (index + modalSources.length) % modalSources.length;
+			const active = modalSources[currentMediaIndex];
+
+			if (lightboxImage instanceof HTMLImageElement) {
+				lightboxImage.hidden = true;
+				lightboxImage.src = '';
+			}
+
+			if (lightboxVideo instanceof HTMLVideoElement) {
+				lightboxVideo.pause();
+				lightboxVideo.currentTime = 0;
+				lightboxVideo.hidden = true;
+				lightboxVideo.src = '';
+			}
+
+			if (lightboxEmbed instanceof HTMLIFrameElement) {
+				lightboxEmbed.hidden = true;
+				lightboxEmbed.src = 'about:blank';
+			}
+
+			if (active.type === 'image') {
+				if (lightboxImage instanceof HTMLImageElement) {
+					lightboxImage.src = active.src;
+					lightboxImage.alt = active.alt;
+					lightboxImage.hidden = false;
+				}
+				if (lightboxKind) {
+					lightboxKind.textContent = 'Imagen';
+				}
+			} else if (active.videoMode === 'file') {
+				if (lightboxVideo instanceof HTMLVideoElement) {
+					lightboxVideo.src = active.src;
+					lightboxVideo.hidden = false;
+				}
+				if (lightboxKind) {
+					lightboxKind.textContent = 'Video';
+				}
+			} else {
+				if (lightboxEmbed instanceof HTMLIFrameElement) {
+					lightboxEmbed.src = active.src;
+					lightboxEmbed.hidden = false;
+				}
+				if (lightboxKind) {
+					lightboxKind.textContent = 'Video';
+				}
+			}
+
+			if (lightboxCounter) {
+				lightboxCounter.textContent = `${currentMediaIndex + 1} / ${modalSources.length}`;
+			}
+		};
+
+		prevButton?.addEventListener('click', () => renderMedia(currentMediaIndex - 1));
+		nextButton?.addEventListener('click', () => renderMedia(currentMediaIndex + 1));
+
+		dots.forEach((dot, dotIndex) => {
+			dot.addEventListener('click', () => renderMedia(dotIndex));
+		});
+
+		mediaButtons.forEach((button) => {
+			button.addEventListener('click', () => {
+				const mediaIndex = Number(button.getAttribute('data-lab-media-index') ?? '0');
+				renderMedia(Number.isNaN(mediaIndex) ? 0 : mediaIndex);
+				renderLightbox(Number.isNaN(mediaIndex) ? 0 : mediaIndex);
+				lightbox.showModal();
+			});
+		});
+
+		lightboxPrev?.addEventListener('click', () => renderLightbox(currentMediaIndex - 1));
+		lightboxNext?.addEventListener('click', () => renderLightbox(currentMediaIndex + 1));
+		lightboxClose?.addEventListener('click', () => lightbox.close());
+
+		lightbox.addEventListener('click', (event) => {
+			if (event.target === lightbox) {
+				lightbox.close();
+			}
+		});
+
+		lightbox.addEventListener('close', () => {
+			if (lightboxVideo instanceof HTMLVideoElement) {
+				lightboxVideo.pause();
+				lightboxVideo.currentTime = 0;
+				lightboxVideo.src = '';
+			}
+			if (lightboxEmbed instanceof HTMLIFrameElement) {
+				lightboxEmbed.src = 'about:blank';
+			}
+		});
+
+		renderMedia(0);
+	}
+</script>
