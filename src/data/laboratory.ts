@@ -6,6 +6,7 @@ export interface LaboratoryEntry {
 	images?: string[];
 	technologies: string[];
 	githubUrl?: string;
+	behanceUrl?: string;
 	liveUrl?: string;
 	downloadUrl?: string;
 	videoEmbedUrl?: string;
@@ -50,5 +51,20 @@ export const laboratoryEntries: LaboratoryEntry[] = [
 		technologies: ['Unity', 'C#', 'Game Development'],
 		liveUrl: 'https://altair343.github.io/World-Jump',
 		year: '2021',
+	},
+
+    {
+		id: 'lab-3',
+		title: 'Biblioteca Design-web',
+		description:
+			'Maquetado de una página web para el curso de diseño web.',
+		thumbnail:
+			'https://res.cloudinary.com/denebv283c/image/upload/v1773453170/imgPortafolio/library/book_wo3drr.png',
+		images: [
+			'https://res.cloudinary.com/denebv283c/image/upload/v1773453170/imgPortafolio/library/book_wo3drr.png'
+		],
+		technologies: ['Photoshop', 'Adobe XD', 'UI/UX'],
+		behanceUrl: 'https://www.behance.net/gallery/91556033/Biblioteca-Design-web',
+		year: '2020',
 	},
 ];
