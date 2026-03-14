@@ -1,0 +1,192 @@
+---
+import Header from '../../components/Header.astro';
+import LaboratoryEntryCard from '../../components/LaboratoryEntryCard.astro';
+import ParticlesCanvas from '../../components/ParticlesCanvas.astro';
+import SiteWrapper from '../../components/SiteWrapper.astro';
+import { laboratoryEntries } from '../../data/laboratory';
+import Layout from '../../layouts/Layout.astro';
+
+const featuredEntries = laboratoryEntries;
+---
+
+<Layout>
+	<SiteWrapper>
+		<Header active="laboratory" />
+
+		<main class="laboratory-page">
+			<ParticlesCanvas id="laboratory-canvas" />
+
+			<div class="laboratory-shell">
+				<section class="laboratory-hero">
+					<div class="hero-copy">
+						<p class="hero-kicker">Archivo personal</p>
+						<h1 class="hero-title">Laboratorio</h1>
+					</div>
+				</section>
+
+				{featuredEntries.length > 0 && (
+					<section class="laboratory-section">
+						<div class="section-header">
+							<p class="section-label">Proyectos</p>
+						</div>
+						<div class="entries-list">
+							{featuredEntries.map((entry, index) => (
+								<LaboratoryEntryCard entry={entry} index={index} />
+							))}
+						</div>
+					</section>
+				)}
+			</div>
+		</main>
+	</SiteWrapper>
+</Layout>
+
+<style>
+	.laboratory-page {
+		position: relative;
+		min-height: 100vh;
+		padding: 96px 40px 80px;
+	}
+
+	.laboratory-shell {
+		position: relative;
+		z-index: 1;
+		max-width: 1240px;
+		margin: 0 auto;
+		display: flex;
+		flex-direction: column;
+		gap: 56px;
+	}
+
+	.laboratory-hero {
+		display: grid;
+		grid-template-columns: minmax(0, 1.5fr) minmax(280px, 0.8fr);
+		gap: 32px;
+		align-items: end;
+		padding-bottom: 24px;
+		border-bottom: 1px solid var(--border-light);
+	}
+
+	.hero-kicker,
+	.section-label,
+	.panel-label {
+		margin: 0 0 12px;
+		font-family: var(--font-heading);
+		font-size: 0.76rem;
+		font-weight: 700;
+		letter-spacing: 0.22em;
+		text-transform: uppercase;
+		color: var(--accent-blue-light);
+	}
+
+	.hero-title,
+	.section-title {
+		margin: 0;
+		font-family: var(--font-heading);
+		color: var(--text-white);
+		letter-spacing: 0.08em;
+		line-height: 0.95;
+	}
+
+	.hero-title {
+		font-size: clamp(3rem, 8vw, 5.6rem);
+	}
+
+	.hero-description {
+		margin: 22px 0 0;
+		max-width: 66ch;
+		color: var(--text-secondary);
+		font-size: 1rem;
+		line-height: 1.8;
+	}
+
+	.hero-panel {
+		padding: 24px;
+		border: 1px solid var(--border-light);
+		background:
+			linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0)),
+			var(--bg-secondary);
+	}
+
+	.panel-list {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+		display: grid;
+		gap: 12px;
+		color: var(--text-primary);
+		font-size: 0.95rem;
+		line-height: 1.6;
+	}
+
+	.panel-list li {
+		padding-left: 18px;
+		position: relative;
+	}
+
+	.panel-list li::before {
+		content: '';
+		position: absolute;
+		left: 0;
+		top: 10px;
+		width: 8px;
+		height: 8px;
+		background: var(--accent-blue-light);
+	}
+
+	.laboratory-section {
+		display: flex;
+		flex-direction: column;
+		gap: 22px;
+	}
+
+	.section-header {
+		display: flex;
+		align-items: end;
+		justify-content: space-between;
+		gap: 16px;
+	}
+
+	.section-label {
+		margin-bottom: 8px;
+	}
+
+	.section-title {
+		font-size: clamp(1.8rem, 4vw, 2.6rem);
+	}
+
+	.entries-list {
+		display: flex;
+		flex-direction: column;
+		gap: 24px;
+	}
+
+	.entries-list.compact {
+		gap: 20px;
+	}
+
+	@media (max-width: 900px) {
+		.laboratory-hero {
+			grid-template-columns: 1fr;
+		}
+	}
+
+	@media (max-width: 768px) {
+		.laboratory-page {
+			padding: 80px 20px 56px;
+		}
+
+		.laboratory-shell {
+			gap: 40px;
+		}
+
+		.section-header {
+			align-items: flex-start;
+			flex-direction: column;
+		}
+
+		.hero-panel {
+			padding: 20px;
+		}
+	}
+</style>
